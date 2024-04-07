@@ -3,9 +3,9 @@ server:
 
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/demo?useSSL=false&serverTimezone=Asia/Shanghai
+    url: jdbc:mysql://localhost:3306/testaccout?useSSL=false&serverTimezone=Asia/Shanghai
     username: root
-    password: Lqy_12345678910
+    password: 102030
     driver-class-name: com.mysql.cj.jdbc.Driver
 
     druid:
@@ -43,7 +43,7 @@ spring:
       #配置StatViewServlet
       stat-view-servlet:
         url-pattern: "/druid/*"
-        login-username: manverick
+        login-username: MacrohardStudio
         login-password: 123456
         #启用
         enabled: true
