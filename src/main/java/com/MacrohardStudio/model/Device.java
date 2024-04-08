@@ -3,9 +3,8 @@ package com.MacrohardStudio.model;
 public class Device {
     private Integer device_id;
     private String device_name;
-    private String category;
-    private String MAC_address;
-
+    private String device_category;
+    private String device_MAC_address;
 
     public Integer getDevice_id() {
         return device_id;
@@ -23,19 +22,19 @@ public class Device {
         this.device_name = device_name;
     }
 
-    public String getCategory() {
-        return category;
+    public String getDevice_category() {
+        return device_category;
     }
 
-    public void setCategory(String category) {
-        this.category = category;
+    public void setDevice_category(String device_category) {
+        this.device_category = device_category;
     }
 
-    public String getMAC_address() {
-        return MAC_address;
+    public String getDevice_MAC_address() {
+        return device_MAC_address;
     }
 
-    public void setMAC_address(String MAC_address) {
-        this.MAC_address = MAC_address;
+    public void setDevice_MAC_address(String device_MAC_address) {
+        this.device_MAC_address = device_MAC_address;
     }
 }

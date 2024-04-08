@@ -1,11 +1,7 @@
-package com.MacrohardStudio.model;
+package com.MacrohardStudio.model.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-public class User
-{
+public class UserDto {
     private String user_name;
-    private String user_password;
     private String user_account;
     private String user_phone;
     private String user_email;
@@ -20,14 +16,6 @@ public class User
 
     public void setUser_name(String user_name) {
         this.user_name = user_name;
-    }
-
-    public String getUser_password() {
-        return user_password;
-    }
-
-    public void setUser_password(String user_password) {
-        this.user_password = user_password;
     }
 
     public String getUser_account() {

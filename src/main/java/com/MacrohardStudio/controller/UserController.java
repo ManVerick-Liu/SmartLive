@@ -1,12 +1,13 @@
 package com.MacrohardStudio.controller;
 
+import com.MacrohardStudio.model.User;
+import com.MacrohardStudio.model.dto.UserDto;
 import com.MacrohardStudio.service.interfaces.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.boot.configurationprocessor.json.JSONObject;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(value = "/user")
@@ -16,14 +17,15 @@ public class UserController {
     private IUserService iUserService;
 
 
-    @GetMapping(value = "/login")
-    public JSONObject login(JSONObject jsonObject) throws JSONException {return iUserService.login(jsonObject);}
+    @PostMapping(value = "/login")
+    public UserDto login(@RequestBody User user){return iUserService.login(user);}
 
-    @GetMapping(value = "/register")
-    public JSONObject register(JSONObject jsonObject)throws JSONException{ return iUserService.register(jsonObject);}
+    @PostMapping (value = "/register")
+    public ResponseEntity<Integer> register(@RequestBody User user){ return iUserService.register(user);}
 
-    @GetMapping(value = "/modify")
-    public JSONObject modify(JSONObject jsonObject)throws JSONException{return iUserService.modify(jsonObject);}
+    @PostMapping(value = "/modify")
+    public ResponseEntity<Integer> modify(@RequestBody User user){return iUserService.modify(user);}
+
 
 
 }
