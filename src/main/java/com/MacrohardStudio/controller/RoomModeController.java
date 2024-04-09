@@ -1,10 +1,11 @@
 package com.MacrohardStudio.controller;
 
-import com.MacrohardStudio.model.enums.Room_Mode;
+import com.MacrohardStudio.model.Room;
 import com.MacrohardStudio.service.interfaces.IRoomModeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -17,5 +18,5 @@ public class RoomModeController {
 
 
     @PostMapping(value = "/change")
-    public ResponseEntity<Integer> change(Integer room_id,Room_Mode room_mode){ return iRoomModeService.change(room_id,room_mode);}
+    public ResponseEntity<Integer> change(@RequestBody Room room){ return iRoomModeService.change(room);}
 }

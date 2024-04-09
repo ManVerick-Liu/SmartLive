@@ -1,6 +1,7 @@
 package com.MacrohardStudio.service;
 
 import com.MacrohardStudio.dao.IRoomModeDao;
+import com.MacrohardStudio.model.Room;
 import com.MacrohardStudio.model.enums.Room_Mode;
 import com.MacrohardStudio.service.interfaces.IRoomModeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,9 +14,11 @@ public class RoomModeService implements IRoomModeService {
     @Autowired
     private IRoomModeDao iRoomModeDao;
 
-    public ResponseEntity<Integer> change(Integer room_id, Room_Mode room_mode) {
+    public ResponseEntity<Integer> change(Room room) {
 
-        iRoomModeDao.change(room_id,room_mode);
+        System.out.println(room.getRoom_type());
+        iRoomModeDao.change(room);
+        System.out.println(room.getRoom_type());
 
         return ResponseEntity.status(200).body(200);
     }
