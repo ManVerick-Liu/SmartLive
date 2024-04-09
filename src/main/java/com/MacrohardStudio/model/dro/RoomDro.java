@@ -1,13 +1,14 @@
-package com.MacrohardStudio.model;
+package com.MacrohardStudio.model.dro;
 
 import com.MacrohardStudio.model.enums.Room_Mode;
 import com.MacrohardStudio.model.enums.Room_Type;
 
-public class Room {
+public class RoomDro {
     private Integer room_id;
     private String room_name;
     private Room_Type room_type;
     private Room_Mode room_mode;
+    private Integer home_id;
 
     public Integer getRoom_id() {
         return room_id;
@@ -25,7 +26,6 @@ public class Room {
         this.room_name = room_name;
     }
 
-
     public Room_Type getRoom_type() {
         return room_type;
     }
@@ -40,5 +40,13 @@ public class Room {
 
     public void setRoom_mode(Room_Mode room_mode) {
         this.room_mode = room_mode;
+    }
+
+    public Integer getHome_id() {
+        return home_id;
+    }
+
+    public void setHome_id(Integer home_id) {
+        this.home_id = home_id;
     }
 }

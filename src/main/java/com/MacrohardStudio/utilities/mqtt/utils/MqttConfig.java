@@ -25,8 +25,8 @@ public class MqttConfig {
     @Bean
     public SenderClient getMqttPushClient()
     {
-        senderClient.connect();
-        receiverClient.connect();
+        //senderClient.connect();
+        //receiverClient.connect();
         return senderClient;
     }
 }

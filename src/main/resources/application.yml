@@ -50,6 +50,8 @@ spring:
 
 mybatis:
   mapper-locations: classpath:mapper/*Mapper.xml
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
 mqtt:
   hostUrl: tcp://192.168.78.143:1883

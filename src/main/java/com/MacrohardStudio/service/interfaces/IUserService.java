@@ -5,7 +5,6 @@ import com.MacrohardStudio.model.dto.UserDto;
 import org.springframework.http.ResponseEntity;
 
 
-import java.util.jar.JarException;
 
 public interface IUserService
 {

@@ -3,10 +3,7 @@ package com.MacrohardStudio.dao;
 import com.MacrohardStudio.model.User;
 import com.MacrohardStudio.model.dto.UserDto;
 import org.apache.ibatis.annotations.Mapper;
-import org.springframework.boot.configurationprocessor.json.JSONException;
-import org.springframework.boot.configurationprocessor.json.JSONObject;
 
-import java.util.jar.JarException;
 
 @Mapper
 public interface IUserDao {

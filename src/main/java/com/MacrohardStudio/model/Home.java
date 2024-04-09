@@ -1,6 +1,6 @@
 package com.MacrohardStudio.model;
 
-public class home {
+public class Home {
     private Integer home_id;
     private String home_name;
 
