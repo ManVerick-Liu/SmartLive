@@ -10,6 +10,12 @@
 
     </select>
 
+    <select id="search" parameterType="com.MacrohardStudio.model.User" resultType="com.MacrohardStudio.model.User">
+        SELECT *
+        FROM user
+        WHERE user_account = #{user_account}
+    </select>
+
     <insert id="register" parameterType="com.MacrohardStudio.model.User" >
         insert into
         user(user_name,user_password,user_account,user_id,user_phone,user_email,user_avatar_url)

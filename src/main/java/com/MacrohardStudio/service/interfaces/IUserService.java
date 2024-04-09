@@ -8,7 +8,7 @@ import org.springframework.http.ResponseEntity;
 
 public interface IUserService
 {
-
+    public User search(String user_account);
     public UserDto login(User user);
     public ResponseEntity<Integer> register(User user);
     public ResponseEntity<Integer> modify(User user);

@@ -18,6 +18,12 @@
         WHERE home_id = #{home_id}
     </select>
 
+    <update id="modify" parameterType="com.MacrohardStudio.model.Home">
+        UPDATE home
+        SET home_name = #{home_name}
+        WHERE home_id = #{home_id}
+    </update>
+
     <select id="search" parameterType="com.MacrohardStudio.model.dro.HomeDro" resultType="com.MacrohardStudio.model.Home">
         SELECT h.*
         FROM home h

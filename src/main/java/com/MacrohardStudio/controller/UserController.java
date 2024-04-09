@@ -26,6 +26,7 @@ public class UserController {
     @PostMapping(value = "/modify")
     public ResponseEntity<Integer> modify(@RequestBody User user){return iUserService.modify(user);}
 
-
+    @GetMapping(value = "/search")
+    public User search(@RequestParam String user_account){return  iUserService.search(user_account);}
 
 }

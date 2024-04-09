@@ -48,19 +48,9 @@ public class RoomService implements IRoomService {
 
 
 
-    public ResponseEntity<Integer> modify(Room room) {
-
-        System.out.println("enter modify home name");
-        System.out.println(room.getRoom_name()+room.getRoom_id());
-        Room oldroom = iRoomDao.select(room.getRoom_id());
-        if(room.getRoom_name()!= oldroom.getRoom_name()&&room.getRoom_name()!=null)
-        {
-            oldroom.setRoom_name(room.getRoom_name());
-        }
-
-        iRoomDao.modify(oldroom);
-
-        System.out.println("modify ok!");
+    public ResponseEntity<Integer> modify(Room room)
+    {
+        iRoomDao.modify(room);
 
         return ResponseEntity.status(200).body(200);
     }

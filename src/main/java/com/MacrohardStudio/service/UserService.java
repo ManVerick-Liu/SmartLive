@@ -17,6 +17,13 @@ public class UserService implements IUserService {
     @Autowired
     private IUserDao iUserDao;
 
+    public User search(String user_account)
+    {
+        User user = new User();
+        user.setUser_account(user_account);
+        return iUserDao.search(user);
+    }
+
     public UserDto login(User user){
 
 //        User user1 = new User();

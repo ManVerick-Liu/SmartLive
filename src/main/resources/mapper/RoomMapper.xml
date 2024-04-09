@@ -15,7 +15,7 @@
 
     <update id="modify" parameterType="com.MacrohardStudio.model.Room" >
         UPDATE room
-        SET room_name = #{room_name}
+        SET room_name = #{room_name}, room_type = #{room_type}
         WHERE room_id = #{room_id}
 
     </update>
