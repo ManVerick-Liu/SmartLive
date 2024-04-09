@@ -24,8 +24,6 @@ public class SenderClientCallBack implements MqttCallbackExtended {
     @Autowired
     private SenderClient senderClient;
 
-    @Autowired
-    private IMqttBackendClientService iMqttBackendClientService;
 
     @Autowired
     private MqttProperties mqttProperties;

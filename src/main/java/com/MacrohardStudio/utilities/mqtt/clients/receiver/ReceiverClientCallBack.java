@@ -24,8 +24,6 @@ public class ReceiverClientCallBack implements MqttCallbackExtended {
     @Autowired
     private ReceiverClient receiverClient;
 
-    @Autowired
-    private IMqttBackendClientService iMqttBackendClientService;
 
     @Autowired
     private MqttProperties mqttProperties;

@@ -7,6 +7,7 @@ import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.stereotype.Component;
 
 @Slf4j
@@ -97,6 +98,23 @@ public class SenderClient
             e.printStackTrace();
         }
     }
+
+    /*public void publish(String topic, JSONObject pushMessage)
+    {
+        MqttMessage message = new MqttMessage();
+        message.setQos(mqttProperties.getQos());
+        message.setRetained(mqttProperties.getRetained());
+        message.setPayload(pushMessage.getBytes());
+        MqttDeliveryToken token;
+        connect();
+        try
+        {
+            client.publish(topic, message);
+        } catch (MqttException e)
+        {
+            e.printStackTrace();
+        }
+    }*/
 
     /**
      * 订阅某个主题

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.MacrohardStudio.dao.IHomeDao">
+
+    <insert id="addHome" parameterType="com.MacrohardStudio.model.Home" useGeneratedKeys="true" keyProperty="home_id">
+        INSERT INTO home(home_name)
+        VALUES (#{home_name})
+    </insert>
+
+    <insert id="addUser_Home" parameterType="com.MacrohardStudio.model.User_Home">
+        INSERT INTO user_home(home_id, user_id)
+        VALUES (#{home_id}, #{user_id})
+    </insert>
+
+    <select id="searchHomeById" parameterType="java.lang.Integer" resultType="com.MacrohardStudio.model.Home">
+        SELECT * FROM home
+        WHERE home_id = #{home_id}
+    </select>
+
+    <select id="search" parameterType="com.MacrohardStudio.model.dro.HomeDro" resultType="com.MacrohardStudio.model.Home">
+        SELECT h.*
+        FROM home h
+        <where>
+            <if test="home_id != null">
+                AND h.home_id = #{home_id}
+            </if>
+            <if test="home_name != ''">
+                AND h.home_name = #{home_name}
+            </if>
+            <if test="user_id != ''">
+                AND EXISTS (
+                SELECT 1
+                FROM user_home uh
+                WHERE h.home_id = uh.home_id
+                AND uh.user_id = #{user_id}
+                )
+            </if>
+            <if test="room_id != null">
+                AND EXISTS (
+                SELECT 1
+                FROM home_room hr
+                WHERE h.home_id = hr.home_id
+                AND hr.room_id = #{room_id}
+                )
+            </if>
+        </where>
+    </select>
+
+
+</mapper>
