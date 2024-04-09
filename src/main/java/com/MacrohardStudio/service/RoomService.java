@@ -52,16 +52,10 @@ public class RoomService implements IRoomService {
 
         System.out.println("enter modify home name");
         System.out.println(room.getRoom_name()+room.getRoom_id());
-        Room oldroom = iRoomDao.select(room.getRoom_id());
-        if(room.getRoom_name()!= oldroom.getRoom_name()&&room.getRoom_name()!=null)
-        {
-            oldroom.setRoom_name(room.getRoom_name());
-        }
 
-        iRoomDao.modify(oldroom);
+        iRoomDao.modify(room);
 
         System.out.println("modify ok!");
-
         return ResponseEntity.status(200).body(200);
     }
 }
