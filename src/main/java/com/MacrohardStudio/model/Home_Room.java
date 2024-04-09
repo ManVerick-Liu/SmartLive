@@ -1,23 +1,38 @@
 package com.MacrohardStudio.model;
 
-public class Home_Room {
+public class Home_Room
+{
+    private Integer id;
+    private Integer home_id;
+    private Integer room_id;
 
-    private int home_id;
-    private int room_id;
+    public Integer getId()
+    {
+        return id;
+    }
 
-    public int getHome_id() {
+    public void setId(Integer id)
+    {
+        this.id = id;
+    }
+
+    public Integer getHome_id()
+    {
         return home_id;
     }
 
-    public void setHome_id(int home_id) {
+    public void setHome_id(Integer home_id)
+    {
         this.home_id = home_id;
     }
 
-    public int getRoom_id() {
+    public Integer getRoom_id()
+    {
         return room_id;
     }
 
-    public void setRoom_id(int room_id) {
+    public void setRoom_id(Integer room_id)
+    {
         this.room_id = room_id;
     }
 }
