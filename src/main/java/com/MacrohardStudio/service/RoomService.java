@@ -4,11 +4,17 @@ import com.MacrohardStudio.dao.IRoomDao;
 import com.MacrohardStudio.model.Home_Room;
 import com.MacrohardStudio.model.Room;
 import com.MacrohardStudio.model.dro.RoomDro;
+import com.MacrohardStudio.model.dto.ResponseCode;
+import com.MacrohardStudio.model.dto.ResponseData;
+import com.MacrohardStudio.model.enums.HttpStatusCode;
 import com.MacrohardStudio.model.enums.Room_Mode;
+import com.MacrohardStudio.model.enums.Room_Type;
 import com.MacrohardStudio.service.interfaces.IRoomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class RoomService implements IRoomService {
@@ -16,42 +22,54 @@ public class RoomService implements IRoomService {
     @Autowired
     private IRoomDao iRoomDao;
 
-    public Room add(RoomDro roomDro) {
-
-        System.out.println("enter add home");
-        System.out.println(roomDro.getRoom_name());
+    public ResponseData<Room> add(RoomDro roomDro)
+    {
         Room room = new Room();
         room.setRoom_mode(Room_Mode.none);
         room.setRoom_type(roomDro.getRoom_type());
         room.setRoom_name(roomDro.getRoom_name());
         iRoomDao.add(room);
-        System.out.println(roomDro.getRoom_id());
 
-
-        //RoomDro result= iRoomDao.select(room.getRoom_id());
-        //获取room_id,并将其设置为home_room 的room_id字段，插入到home_room中
         Home_Room home_room = new Home_Room();
         home_room.setRoom_id(room.getRoom_id());
         home_room.setHome_id(roomDro.getHome_id());
         iRoomDao.addHome_Room(home_room);
-        //System.out.println(result.getRoom_id());
-//        result.setRoom_id(result.getRoom_id());
-//        result.setRoom_name(result.getRoom_name());
-//        result.setRoom_type(result.getRoom_type());
-//        result.setRoom_mode(result.getRoom_mode());
 
-        System.out.println("room and home_room add successfully !");
+        Room result = iRoomDao.select(room.getRoom_id());
 
-        return room;
+        ResponseData<Room> responseData = new ResponseData<>();
+        responseData.setCode(HttpStatusCode.OK.getValue());
+        responseData.setData(result);
+
+        return responseData;
 
     }
 
-
-
-    public ResponseEntity<Integer> modify(Room room)
+    public ResponseCode modify(Room room)
     {
         iRoomDao.modify(room);
 
-        return ResponseEntity.status(200).body(200);
+        ResponseCode responseCode = new ResponseCode();
+        responseCode.setCode(HttpStatusCode.OK.getValue());
+
+        return responseCode;
+    }
+
+    public ResponseData<List<Room>> search(Integer room_id, Room_Type room_type, String room_name, Integer home_id, Integer device_id)
+    {
+        RoomDro roomDro = new RoomDro();
+        roomDro.setRoom_id(room_id);
+        roomDro.setRoom_name(room_name);
+        roomDro.setRoom_type(room_type);
+        roomDro.setHome_id(home_id);
+        roomDro.setDevice_id(device_id);
+
+        List<Room> result = iRoomDao.search(roomDro);
+
+        ResponseData<List<Room>> responseData = new ResponseData<>();
+        responseData.setCode(HttpStatusCode.OK.getValue());
+        responseData.setData(result);
+
+        return responseData;
     }
 }

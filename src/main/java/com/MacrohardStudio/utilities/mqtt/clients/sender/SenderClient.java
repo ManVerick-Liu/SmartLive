@@ -40,7 +40,7 @@ public class SenderClient
         MqttClient client;
         try
         {
-            client = new MqttClient(mqttProperties.getHostUrl(), mqttProperties.getClientId()+System.currentTimeMillis(), new MemoryPersistence());
+            client = new MqttClient(mqttProperties.getHostUrl(), "BackendSendClient", new MemoryPersistence());
             MqttConnectOptions options = new MqttConnectOptions();
             options.setUserName(mqttProperties.getUsername());
             options.setPassword(mqttProperties.getPassword().toCharArray());

@@ -1,11 +1,11 @@
 package com.MacrohardStudio.controller;
 
 import com.MacrohardStudio.model.User;
+import com.MacrohardStudio.model.dto.ResponseCode;
+import com.MacrohardStudio.model.dto.ResponseData;
 import com.MacrohardStudio.model.dto.UserDto;
 import com.MacrohardStudio.service.interfaces.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.configurationprocessor.json.JSONException;
-import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,15 +18,15 @@ public class UserController {
 
 
     @PostMapping(value = "/login")
-    public UserDto login(@RequestBody User user){return iUserService.login(user);}
+    public ResponseData<UserDto> login(@RequestBody User user){return iUserService.login(user);}
 
     @PostMapping (value = "/register")
-    public ResponseEntity<Integer> register(@RequestBody User user){ return iUserService.register(user);}
+    public ResponseCode register(@RequestBody User user){ return iUserService.register(user);}
 
     @PostMapping(value = "/modify")
-    public ResponseEntity<Integer> modify(@RequestBody User user){return iUserService.modify(user);}
+    public ResponseCode modify(@RequestBody User user){return iUserService.modify(user);}
 
     @GetMapping(value = "/search")
-    public User search(@RequestParam String user_account){return  iUserService.search(user_account);}
+    public ResponseData<User> search(@RequestParam String user_account){return  iUserService.search(user_account);}
 
 }

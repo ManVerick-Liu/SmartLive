@@ -2,6 +2,8 @@ package com.MacrohardStudio.controller;
 
 import com.MacrohardStudio.model.Home;
 import com.MacrohardStudio.model.dro.HomeDro;
+import com.MacrohardStudio.model.dto.ResponseCode;
+import com.MacrohardStudio.model.dto.ResponseData;
 import com.MacrohardStudio.service.interfaces.IHomeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -17,17 +19,17 @@ public class HomeController
     private IHomeService iHomeService;
 
     @PostMapping(value = "/add")
-    public Home add(@RequestBody HomeDro homeDro)
+    public ResponseData<Home> add(@RequestBody HomeDro homeDro)
     {
         return iHomeService.add(homeDro);
     }
     @PostMapping(value = "/modify")
-    public ResponseEntity<Integer> modify(@RequestBody Home home)
+    public ResponseCode modify(@RequestBody Home home)
     {
         return iHomeService.modify(home);
     }
     @GetMapping(value = "/search")
-    public List<Home> search
+    public ResponseData<List<Home>> search
             (@RequestParam(required = false) Integer home_id,
              @RequestParam(required = false) String home_name,
              @RequestParam(required = false) String user_id,

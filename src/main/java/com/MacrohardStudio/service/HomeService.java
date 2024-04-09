@@ -4,6 +4,9 @@ import com.MacrohardStudio.dao.IHomeDao;
 import com.MacrohardStudio.model.Home;
 import com.MacrohardStudio.model.User_Home;
 import com.MacrohardStudio.model.dro.HomeDro;
+import com.MacrohardStudio.model.dto.ResponseCode;
+import com.MacrohardStudio.model.dto.ResponseData;
+import com.MacrohardStudio.model.enums.HttpStatusCode;
 import com.MacrohardStudio.service.interfaces.IHomeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +22,7 @@ public class HomeService implements IHomeService
     @Autowired
     private IHomeDao iHomeDao;
 
-    public Home add(HomeDro homeDro)
+    public ResponseData<Home> add(HomeDro homeDro)
     {
         Home home = new Home();
         home.setHome_name(homeDro.getHome_name());
@@ -34,9 +37,13 @@ public class HomeService implements IHomeService
         user_home.setHome_id(result.getHome_id());
         iHomeDao.addUser_Home(user_home);
 
-        return result;
+        ResponseData<Home> responseData = new ResponseData<>();
+        responseData.setCode(HttpStatusCode.OK.getValue());
+        responseData.setData(result);
+
+        return responseData;
     }
-    public ResponseEntity<Integer> modify(Home home)
+    public ResponseCode modify(Home home)
     {
         Home homeTemp = iHomeDao.searchHomeById(home.getHome_id());
 
@@ -46,33 +53,24 @@ public class HomeService implements IHomeService
         }
         iHomeDao.modify(home);
 
-        return ResponseEntity.status(200).body(200);
+        ResponseCode responseCode = new ResponseCode();
+        responseCode.setCode(HttpStatusCode.OK.getValue());
+        return responseCode;
     }
-    public List<Home> search(Integer home_id, String home_name, String user_id, Integer room_id)
+    public ResponseData<List<Home>> search(Integer home_id, String home_name, String user_id, Integer room_id)
     {
-        /*Home home = new Home();
-        home.setHome_name(homeDro.getHome_name());
-        home.setHome_id(homeDro.getHome_id());
-
-        Integer home_id = homeDro.getHome_id();
-
-        String home_name = homeDro.getHome_name();
-
-        String user_id = homeDro.getUser_id();
-
-        Integer room_id = homeDro.getRoom_id();*/
-
         HomeDro homeDro = new HomeDro();
         homeDro.setHome_name(home_name);
         homeDro.setRoom_id(room_id);
         homeDro.setHome_id(home_id);
         homeDro.setUser_id(user_id);
 
-        /*System.out.println(homeDro.getHome_name());
-        System.out.println(homeDro.getRoom_id());
-        System.out.println(homeDro.getUser_id());
-        System.out.println(homeDro.getHome_id());*/
+        List<Home> result = iHomeDao.search(homeDro);
 
-        return iHomeDao.search(homeDro);
+        ResponseData<List<Home>> responseData = new ResponseData<>();
+        responseData.setCode(HttpStatusCode.OK.getValue());
+        responseData.setData(result);
+
+        return responseData;
     }
 }

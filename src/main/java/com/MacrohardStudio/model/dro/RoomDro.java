@@ -9,6 +9,7 @@ public class RoomDro {
     private Room_Type room_type;
     private Room_Mode room_mode;
     private Integer home_id;
+    private Integer device_id;
 
     public Integer getRoom_id() {
         return room_id;
@@ -48,5 +49,15 @@ public class RoomDro {
 
     public void setHome_id(Integer home_id) {
         this.home_id = home_id;
+    }
+
+    public Integer getDevice_id()
+    {
+        return device_id;
+    }
+
+    public void setDevice_id(Integer device_id)
+    {
+        this.device_id = device_id;
     }
 }

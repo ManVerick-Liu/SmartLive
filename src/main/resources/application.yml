@@ -57,7 +57,7 @@ mqtt:
   hostUrl: tcp://192.168.78.143:1883
   username: admin
   password: zy4085..
-  client-id: mqttBackendClient
+  #client-id: mqttBackendClient
   cleanSession: true
   reconnect: true
   timeout: 100

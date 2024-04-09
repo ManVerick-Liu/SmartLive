@@ -25,4 +25,38 @@
         FROM room
         WHERE room_id = #{room_id}
     </select>
+
+    <select id="search" parameterType="com.MacrohardStudio.model.dro.RoomDro" resultType="com.MacrohardStudio.model.Room">
+        SELECT r.*
+        FROM room r
+        <where>
+            <if test="room_id != null">
+                AND r.room_id = #{room_id}
+            </if>
+            <if test="room_name != ''">
+                AND r.room_name = #{room_name}
+            </if>
+            <if test="room_type != ''">
+                AND r.room_type = #{room_type}
+            </if>
+            <if test="home_id != null">
+                AND EXISTS (
+                SELECT 1
+                FROM home_room hr
+                WHERE r.room_id = hr.room_id
+                AND hr.home_id = #{home_id}
+                )
+            </if>
+            <if test="device_id != null">
+                AND EXISTS (
+                SELECT 1
+                FROM room_device rd
+                WHERE h.room_id = rd.room_id
+                AND rd.device_id = #{device_id}
+                )
+            </if>
+        </where>
+    </select>
+
+
 </mapper>
