@@ -1,13 +1,12 @@
 package com.MacrohardStudio.controller;
 
-import com.MacrohardStudio.model.Room;
+import com.MacrohardStudio.model.rootTable.Room;
 import com.MacrohardStudio.model.dro.RoomDro;
 import com.MacrohardStudio.model.dto.ResponseCode;
 import com.MacrohardStudio.model.dto.ResponseData;
 import com.MacrohardStudio.model.enums.Room_Type;
 import com.MacrohardStudio.service.interfaces.IRoomService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

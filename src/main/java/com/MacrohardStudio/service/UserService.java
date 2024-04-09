@@ -3,15 +3,11 @@ package com.MacrohardStudio.service;
 import com.MacrohardStudio.dao.IUserDao;
 import com.MacrohardStudio.model.dto.ResponseCode;
 import com.MacrohardStudio.model.enums.HttpStatusCode;
-import com.MacrohardStudio.model.User;
+import com.MacrohardStudio.model.rootTable.User;
 import com.MacrohardStudio.model.dto.ResponseData;
 import com.MacrohardStudio.model.dto.UserDto;
-import com.MacrohardStudio.model.enums.HttpStatusCode;
 import com.MacrohardStudio.service.interfaces.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.configurationprocessor.json.JSONException;
-import org.springframework.boot.configurationprocessor.json.JSONObject;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;

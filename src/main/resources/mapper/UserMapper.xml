@@ -3,26 +3,26 @@
 
 <mapper namespace="com.MacrohardStudio.dao.IUserDao">
 
-    <select id="login" parameterType="com.MacrohardStudio.model.User" resultType="com.MacrohardStudio.model.dto.UserDto">
+    <select id="login" parameterType="com.MacrohardStudio.model.rootTable.User" resultType="com.MacrohardStudio.model.dto.UserDto">
         SELECT user_name,user_account,user_id,user_phone,user_email,user_avatar_url
         FROM user
         WHERE user_account = #{user_account} AND user_password = #{user_password}
 
     </select>
 
-    <select id="search" parameterType="com.MacrohardStudio.model.User" resultType="com.MacrohardStudio.model.User">
+    <select id="search" parameterType="com.MacrohardStudio.model.rootTable.User" resultType="com.MacrohardStudio.model.rootTable.User">
         SELECT *
         FROM user
         WHERE user_account = #{user_account}
     </select>
 
-    <insert id="register" parameterType="com.MacrohardStudio.model.User" >
+    <insert id="register" parameterType="com.MacrohardStudio.model.rootTable.User" >
         insert into
         user(user_name,user_password,user_account,user_id,user_phone,user_email,user_avatar_url)
         values(#{user_name},#{user_password},#{user_account},#{user_id},#{user_phone},#{user_email},#{user_avatar_url})
     </insert>
 
-    <update id="modify" parameterType="com.MacrohardStudio.model.User" >
+    <update id="modify" parameterType="com.MacrohardStudio.model.rootTable.User" >
 
         UPDATE user
         SET user_password = #{user_password},user_name = #{user_name}, user_phone = #{user_phone}, user_email = #{user_email}
@@ -30,7 +30,7 @@
         WHERE user_id = #{user_id}
 
     </update>
-    <select id="select" parameterType="java.lang.String" resultType="com.MacrohardStudio.model.User">
+    <select id="select" parameterType="java.lang.String" resultType="com.MacrohardStudio.model.rootTable.User">
         SELECT *
         FROM user
         WHERE user_id = #{user_id}

@@ -1,7 +1,7 @@
 package com.MacrohardStudio.dao;
 
-import com.MacrohardStudio.model.Home;
-import com.MacrohardStudio.model.User_Home;
+import com.MacrohardStudio.model.rootTable.Home;
+import com.MacrohardStudio.model.followTable.User_Home;
 import com.MacrohardStudio.model.dro.HomeDro;
 import org.apache.ibatis.annotations.Mapper;
 

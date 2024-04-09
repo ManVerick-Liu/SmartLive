@@ -1,9 +1,11 @@
-package com.MacrohardStudio.model;
+package com.MacrohardStudio.model.rootTable;
+
+import com.MacrohardStudio.model.enums.Device_Category;
 
 public class Device {
     private Integer device_id;
     private String device_name;
-    private String device_category;
+    private Device_Category device_category;
     private String device_mac_address;
 
     public Integer getDevice_id() {
@@ -22,19 +24,21 @@ public class Device {
         this.device_name = device_name;
     }
 
-    public String getDevice_category() {
-        return device_category;
-    }
-
-    public void setDevice_category(String device_category) {
-        this.device_category = device_category;
-    }
-
     public String getDevice_mac_address() {
         return device_mac_address;
     }
 
     public void setDevice_mac_address(String device_mac_address) {
         this.device_mac_address = device_mac_address;
+    }
+
+    public Device_Category getDevice_category()
+    {
+        return device_category;
+    }
+
+    public void setDevice_category(Device_Category device_category)
+    {
+        this.device_category = device_category;
     }
 }

@@ -1,7 +1,5 @@
 package com.MacrohardStudio.model.dro;
 
-import com.MacrohardStudio.model.Home;
-
 public class HomeDro
 {
     private Integer home_id;

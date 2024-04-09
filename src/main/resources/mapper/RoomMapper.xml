@@ -2,31 +2,31 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.MacrohardStudio.dao.IRoomDao">
-    <insert id="add" parameterType="com.MacrohardStudio.model.Room" useGeneratedKeys="true" keyProperty="room_id">
+    <insert id="add" parameterType="com.MacrohardStudio.model.rootTable.Room" useGeneratedKeys="true" keyProperty="room_id">
         insert into
         room(room_name,room_type,room_mode)
         values(#{room_name},#{room_type},#{room_mode})
     </insert>
-    <insert id="addHome_Room" parameterType="com.MacrohardStudio.model.Home_Room" >
+    <insert id="addHome_Room" parameterType="com.MacrohardStudio.model.followTable.Home_Room" >
         insert into
         home_room(room_id,home_id)
         values(#{room_id},#{home_id})
     </insert>
 
-    <update id="modify" parameterType="com.MacrohardStudio.model.Room" >
+    <update id="modify" parameterType="com.MacrohardStudio.model.rootTable.Room" >
         UPDATE room
         SET room_name = #{room_name}, room_type = #{room_type}
         WHERE room_id = #{room_id}
 
     </update>
 
-    <select id="select" parameterType="java.lang.Integer" resultType="com.MacrohardStudio.model.Room">
+    <select id="select" parameterType="java.lang.Integer" resultType="com.MacrohardStudio.model.rootTable.Room">
         SELECT *
         FROM room
         WHERE room_id = #{room_id}
     </select>
 
-    <select id="search" parameterType="com.MacrohardStudio.model.dro.RoomDro" resultType="com.MacrohardStudio.model.Room">
+    <select id="search" parameterType="com.MacrohardStudio.model.dro.RoomDro" resultType="com.MacrohardStudio.model.rootTable.Room">
         SELECT r.*
         FROM room r
         <where>

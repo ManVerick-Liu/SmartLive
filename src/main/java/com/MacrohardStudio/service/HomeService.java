@@ -1,18 +1,16 @@
 package com.MacrohardStudio.service;
 
 import com.MacrohardStudio.dao.IHomeDao;
-import com.MacrohardStudio.model.Home;
-import com.MacrohardStudio.model.User_Home;
+import com.MacrohardStudio.model.rootTable.Home;
+import com.MacrohardStudio.model.followTable.User_Home;
 import com.MacrohardStudio.model.dro.HomeDro;
 import com.MacrohardStudio.model.dto.ResponseCode;
 import com.MacrohardStudio.model.dto.ResponseData;
 import com.MacrohardStudio.model.enums.HttpStatusCode;
 import com.MacrohardStudio.service.interfaces.IHomeService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 

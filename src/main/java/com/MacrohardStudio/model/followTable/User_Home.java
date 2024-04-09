@@ -1,10 +1,10 @@
-package com.MacrohardStudio.model;
+package com.MacrohardStudio.model.followTable;
 
-public class Home_Room
+public class User_Home
 {
     private Integer id;
     private Integer home_id;
-    private Integer room_id;
+    private String user_id;
 
     public Integer getId()
     {
@@ -26,13 +26,13 @@ public class Home_Room
         this.home_id = home_id;
     }
 
-    public Integer getRoom_id()
+    public String getUser_id()
     {
-        return room_id;
+        return user_id;
     }
 
-    public void setRoom_id(Integer room_id)
+    public void setUser_id(String user_id)
     {
-        this.room_id = room_id;
+        this.user_id = user_id;
     }
 }

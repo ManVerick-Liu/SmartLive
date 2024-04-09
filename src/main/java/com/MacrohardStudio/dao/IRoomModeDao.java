@@ -1,6 +1,6 @@
 package com.MacrohardStudio.dao;
 
-import com.MacrohardStudio.model.Mode;
+import com.MacrohardStudio.model.rootTable.Mode;
 import com.MacrohardStudio.model.enums.Room_Mode;
 import org.apache.ibatis.annotations.Mapper;
 

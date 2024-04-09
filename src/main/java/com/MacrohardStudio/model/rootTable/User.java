@@ -1,4 +1,4 @@
-package com.MacrohardStudio.model;
+package com.MacrohardStudio.model.rootTable;
 
 public class User
 {

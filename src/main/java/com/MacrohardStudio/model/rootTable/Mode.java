@@ -1,4 +1,4 @@
-package com.MacrohardStudio.model;
+package com.MacrohardStudio.model.rootTable;
 
 import com.MacrohardStudio.model.enums.Room_Type;
 

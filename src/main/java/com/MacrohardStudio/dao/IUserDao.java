@@ -1,6 +1,6 @@
 package com.MacrohardStudio.dao;
 
-import com.MacrohardStudio.model.User;
+import com.MacrohardStudio.model.rootTable.User;
 import com.MacrohardStudio.model.dto.UserDto;
 import org.apache.ibatis.annotations.Mapper;
 

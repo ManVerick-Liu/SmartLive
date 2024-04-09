@@ -1,8 +1,8 @@
 package com.MacrohardStudio.service;
 
 import com.MacrohardStudio.dao.IRoomDao;
-import com.MacrohardStudio.model.Home_Room;
-import com.MacrohardStudio.model.Room;
+import com.MacrohardStudio.model.followTable.Home_Room;
+import com.MacrohardStudio.model.rootTable.Room;
 import com.MacrohardStudio.model.dro.RoomDro;
 import com.MacrohardStudio.model.dto.ResponseCode;
 import com.MacrohardStudio.model.dto.ResponseData;
@@ -11,7 +11,6 @@ import com.MacrohardStudio.model.enums.Room_Mode;
 import com.MacrohardStudio.model.enums.Room_Type;
 import com.MacrohardStudio.service.interfaces.IRoomService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

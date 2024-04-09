@@ -3,28 +3,28 @@
 
 <mapper namespace="com.MacrohardStudio.dao.IHomeDao">
 
-    <insert id="addHome" parameterType="com.MacrohardStudio.model.Home" useGeneratedKeys="true" keyProperty="home_id">
+    <insert id="addHome" parameterType="com.MacrohardStudio.model.rootTable.Home" useGeneratedKeys="true" keyProperty="home_id">
         INSERT INTO home(home_name)
         VALUES (#{home_name})
     </insert>
 
-    <insert id="addUser_Home" parameterType="com.MacrohardStudio.model.User_Home">
+    <insert id="addUser_Home" parameterType="com.MacrohardStudio.model.followTable.User_Home">
         INSERT INTO user_home(home_id, user_id)
         VALUES (#{home_id}, #{user_id})
     </insert>
 
-    <select id="searchHomeById" parameterType="java.lang.Integer" resultType="com.MacrohardStudio.model.Home">
+    <select id="searchHomeById" parameterType="java.lang.Integer" resultType="com.MacrohardStudio.model.rootTable.Home">
         SELECT * FROM home
         WHERE home_id = #{home_id}
     </select>
 
-    <update id="modify" parameterType="com.MacrohardStudio.model.Home">
+    <update id="modify" parameterType="com.MacrohardStudio.model.rootTable.Home">
         UPDATE home
         SET home_name = #{home_name}
         WHERE home_id = #{home_id}
     </update>
 
-    <select id="search" parameterType="com.MacrohardStudio.model.dro.HomeDro" resultType="com.MacrohardStudio.model.Home">
+    <select id="search" parameterType="com.MacrohardStudio.model.dro.HomeDro" resultType="com.MacrohardStudio.model.rootTable.Home">
         SELECT h.*
         FROM home h
         <where>
