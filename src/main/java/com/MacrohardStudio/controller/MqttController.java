@@ -1,5 +1,6 @@
 package com.MacrohardStudio.controller;
 
+import com.MacrohardStudio.service.interfaces.IMqttService;
 import com.MacrohardStudio.utilities.mqtt.clients.receiver.ReceiverClient;
 import com.MacrohardStudio.utilities.mqtt.clients.sender.SenderClient;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,16 +16,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class MqttController
 {
     @Autowired
-    private SenderClient senderClient;
-
-    @Autowired
-    private ReceiverClient receiverClient;
+    private IMqttService iMqttService;
 
     @GetMapping(value = "/publish")
-    public void publish() throws JSONException
+    public void publish(String command)
     {
-        JSONObject command = new JSONObject();
-        command.put("1101","0");
-        senderClient.publish("subtopic", command.toString());
+        iMqttService.publish(command);
     }
 }

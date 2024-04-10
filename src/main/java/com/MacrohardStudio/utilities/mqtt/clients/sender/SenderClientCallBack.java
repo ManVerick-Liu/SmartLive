@@ -49,7 +49,9 @@ public class SenderClientCallBack implements MqttCallbackExtended {
      * @param mqttMessage 消息
      */
     @Override
-    public void messageArrived(String topic, MqttMessage mqttMessage) throws Exception {
+    public void messageArrived(String topic, MqttMessage mqttMessage) throws Exception
+    {
+        /*
         String s =  new String(mqttMessage.getPayload());
 
         logger.info("接收消息主题 : " + topic);
@@ -60,6 +62,7 @@ public class SenderClientCallBack implements MqttCallbackExtended {
 
         //向数据库插入数据
         //iMqttBackendClientService.dataInsert(data);
+        */
     }
 
     /**
@@ -97,6 +100,6 @@ public class SenderClientCallBack implements MqttCallbackExtended {
                 + SenderClient.client.getClientId() + "客户端连接成功！--------------------");
 
         //订阅主题
-        senderClient.subscribe("subtopic", mqttProperties.getQos());
+        //senderClient.subscribe("subtopic", mqttProperties.getQos());
     }
 }

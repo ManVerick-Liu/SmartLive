@@ -1,5 +1,7 @@
 package com.MacrohardStudio.utilities.mqtt.clients.receiver;
 
+import com.MacrohardStudio.dao.IMqttDao;
+import com.MacrohardStudio.service.interfaces.IMqttService;
 import com.MacrohardStudio.utilities.mqtt.utils.MqttProperties;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
@@ -24,6 +26,8 @@ public class ReceiverClientCallBack implements MqttCallbackExtended {
     @Autowired
     private ReceiverClient receiverClient;
 
+    @Autowired
+    private IMqttService iMqttService;
 
     @Autowired
     private MqttProperties mqttProperties;
@@ -50,16 +54,15 @@ public class ReceiverClientCallBack implements MqttCallbackExtended {
      */
     @Override
     public void messageArrived(String topic, MqttMessage mqttMessage) throws Exception {
-        String s =  new String(mqttMessage.getPayload());
+        String data =  new String(mqttMessage.getPayload());
 
         logger.info("接收消息主题 : " + topic);
         logger.info("接收消息Qos : " + mqttMessage.getQos());
-        logger.info("接收的消息内容 : " + s);
+        logger.info("接收的消息内容 : " + data);
 
-        JSONObject data = new JSONObject(s);
+        //JSONObject data = new JSONObject(s);
 
-        //向数据库插入数据
-        //iMqttBackendClientService.dataInsert(data);
+        iMqttService.mqttMessageHandler(data);
     }
 
     /**
@@ -68,8 +71,9 @@ public class ReceiverClientCallBack implements MqttCallbackExtended {
      * @param token token
      */
     @Override
-    public void deliveryComplete(IMqttDeliveryToken token) {
-        String[] topics = token.getTopics();
+    public void deliveryComplete(IMqttDeliveryToken token)
+    {
+        /*String[] topics = token.getTopics();
         for (String topic : topics) {
             logger.info("向主题：" + topic + "发送消息成功！");
         }
@@ -82,7 +86,7 @@ public class ReceiverClientCallBack implements MqttCallbackExtended {
             e.printStackTrace();
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
-        }
+        }*/
     }
 
     /**

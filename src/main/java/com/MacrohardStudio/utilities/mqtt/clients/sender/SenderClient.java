@@ -99,6 +99,11 @@ public class SenderClient
         }
     }
 
+    public void publish(String pushMessage)
+    {
+        publish("subtopic", pushMessage);
+    }
+
     /*public void publish(String topic, JSONObject pushMessage)
     {
         MqttMessage message = new MqttMessage();

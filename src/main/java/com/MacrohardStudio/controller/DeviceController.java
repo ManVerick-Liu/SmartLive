@@ -35,4 +35,10 @@ public class DeviceController
              @RequestParam String device_name,
              @RequestParam Device_Category device_category)
     { return iDeviceService.search(device_id, room_id, device_name, device_category);}
+
+    @PostMapping(value = "/control")
+    public ResponseCode control()
+    {
+        return null;
+    }
 }

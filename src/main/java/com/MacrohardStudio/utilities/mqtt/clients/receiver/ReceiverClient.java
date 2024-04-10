@@ -81,7 +81,7 @@ public class ReceiverClient
      * @param topic 订阅的主题
      * @param pushMessage 消息体
      */
-    public void publish(String topic, String pushMessage)
+    /*public void publish(String topic, String pushMessage)
     {
         MqttMessage message = new MqttMessage();
         message.setQos(mqttProperties.getQos());
@@ -96,7 +96,7 @@ public class ReceiverClient
         {
             e.printStackTrace();
         }
-    }
+    }*/
 
     /**
      * 订阅某个主题
