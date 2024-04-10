@@ -1,10 +1,13 @@
 package com.MacrohardStudio.model.followTable;
 
+import com.MacrohardStudio.model.rootTable.Device;
+
 public class Room_Device
 {
     private Integer id;
     private Integer room_id;
     private Integer device_id;
+    private Device device;
 
     public Integer getId()
     {
@@ -34,5 +37,13 @@ public class Room_Device
     public void setDevice_id(Integer device_id)
     {
         this.device_id = device_id;
+    }
+
+    public Device getDevice() {
+        return device;
+    }
+
+    public void setDevice(Device device) {
+        this.device = device;
     }
 }

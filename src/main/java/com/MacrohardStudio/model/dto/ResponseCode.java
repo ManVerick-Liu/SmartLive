@@ -13,4 +13,5 @@ public class ResponseCode
     {
         this.code = code;
     }
+
 }
