@@ -6,7 +6,7 @@ public class Device {
     private Integer device_id;
     private String device_name;
     private Device_Category device_category;
-    private String device_mac_address;
+    private Integer device_mac_address;
 
     public Integer getDevice_id() {
         return device_id;
@@ -24,11 +24,11 @@ public class Device {
         this.device_name = device_name;
     }
 
-    public String getDevice_mac_address() {
+    public Integer getDevice_mac_address() {
         return device_mac_address;
     }
 
-    public void setDevice_mac_address(String device_mac_address) {
+    public void setDevice_mac_address(Integer device_mac_address) {
         this.device_mac_address = device_mac_address;
     }
 

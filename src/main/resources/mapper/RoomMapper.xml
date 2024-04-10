@@ -15,9 +15,11 @@
 
     <update id="modify" parameterType="com.MacrohardStudio.model.rootTable.Room" >
         UPDATE room
-        SET room_name = #{room_name}, room_type = #{room_type}
+        <set>
+            <if test="room_name != null">room_name = #{room_name},</if>
+            <if test="room_type != null">room_type = #{room_type},</if>
+        </set>
         WHERE room_id = #{room_id}
-
     </update>
 
     <select id="select" parameterType="java.lang.Integer" resultType="com.MacrohardStudio.model.rootTable.Room">
@@ -36,7 +38,7 @@
             <if test="room_name != ''">
                 AND r.room_name = #{room_name}
             </if>
-            <if test="room_type != ''">
+            <if test="room_type != null">
                 AND r.room_type = #{room_type}
             </if>
             <if test="home_id != null">
@@ -51,7 +53,7 @@
                 AND EXISTS (
                 SELECT 1
                 FROM room_device rd
-                WHERE h.room_id = rd.room_id
+                WHERE r.room_id = rd.room_id
                 AND rd.device_id = #{device_id}
                 )
             </if>

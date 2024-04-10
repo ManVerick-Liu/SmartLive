@@ -23,5 +23,40 @@
         where device_id = #{device_id}
     </delete>
 
+    <update id="modify" parameterType="com.MacrohardStudio.model.rootTable.Device">
+        UPDATE device
+        SET device_name = #{device_name}
+        WHERE device_id = #{device_id}
 
+    </update>
+
+    <update id="modifyRoom_Device" parameterType="com.MacrohardStudio.model.followTable.Room_Device">
+        UPDATE room_device
+        SET room_id = #{room_id}
+        WHERE device_id = #{device_id}
+    </update>
+
+    <select id="search" parameterType="com.MacrohardStudio.model.dro.DeviceDro" resultType="com.MacrohardStudio.model.rootTable.Device">
+        SELECT d.*
+        FROM device d
+        <where>
+            <if test="device_id != null">
+                AND d.device_id = #{device_id}
+            </if>
+            <if test="device_name != ''">
+                AND d.device_name = #{device_name}
+            </if>
+            <if test="device_category != null">
+                AND d.device_category = #{device_category}
+            </if>
+            <if test="room_id != null">
+                AND EXISTS (
+                SELECT 1
+                FROM room_device rd
+                WHERE d.device_id = rd.device_id
+                AND rd.room_id = #{room_id}
+                )
+            </if>
+        </where>
+    </select>
 </mapper>
