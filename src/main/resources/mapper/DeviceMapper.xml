@@ -3,6 +3,25 @@
 
 <mapper namespace="com.MacrohardStudio.dao.IDeviceDao">
 
+    <insert id="add" parameterType="com.MacrohardStudio.model.rootTable.Device" useGeneratedKeys="true" keyProperty="device_id">
+        insert into device
+        (device_name,device_category,device_mac_address)
+        values(#{device_name},#{device_category},#{device_mac_address})
+    </insert>
+    <insert id="addRoom_Device" parameterType="com.MacrohardStudio.model.followTable.Room_Device">
+        insert into room_device
+        (device_id,room_id)
+        values(#{device_id},#{room_id})
+    </insert>
+    <delete id="delete" parameterType="com.MacrohardStudio.model.rootTable.Device">
+        delete from device
+        where device_id = #{device_id}
+
+    </delete>
+    <delete id="deleteRoom_Device" parameterType="com.MacrohardStudio.model.rootTable.Device">
+        delete from room_device
+        where device_id = #{device_id}
+    </delete>
 
 
 </mapper>
