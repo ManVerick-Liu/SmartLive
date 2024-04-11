@@ -31,10 +31,10 @@
             <if test="home_id != null">
                 AND h.home_id = #{home_id}
             </if>
-            <if test="home_name != ''">
+            <if test="home_name != '' &amp;&amp; home_name != null">
                 AND h.home_name = #{home_name}
             </if>
-            <if test="user_id != ''">
+            <if test="user_id != '' &amp;&amp; user_id != null">
                 AND EXISTS (
                 SELECT 1
                 FROM user_home uh

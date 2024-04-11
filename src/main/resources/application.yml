@@ -54,7 +54,7 @@ mybatis:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
 mqtt:
-  hostUrl: tcp://192.168.78.143:1883
+  hostUrl: tcp://192.168.0.104:1883
   username: admin
   password: zy4085..
   #client-id: mqttBackendClient

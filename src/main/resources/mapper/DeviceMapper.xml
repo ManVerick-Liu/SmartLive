@@ -43,7 +43,7 @@
             <if test="device_id != null">
                 AND d.device_id = #{device_id}
             </if>
-            <if test="device_name != ''">
+            <if test="device_name != '' &amp;&amp; device_name != null">
                 AND d.device_name = #{device_name}
             </if>
             <if test="device_category != null">

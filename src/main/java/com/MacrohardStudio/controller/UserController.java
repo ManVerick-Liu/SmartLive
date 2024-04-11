@@ -26,6 +26,6 @@ public class UserController {
     public ResponseCode modify(@RequestBody User user){return iUserService.modify(user);}
 
     @GetMapping(value = "/search")
-    public ResponseData<User> search(@RequestParam String user_account){return  iUserService.search(user_account);}
+    public ResponseData<User> search(@RequestParam(required = false) String user_account){return  iUserService.search(user_account);}
 
 }

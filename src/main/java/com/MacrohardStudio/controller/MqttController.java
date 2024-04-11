@@ -19,8 +19,9 @@ public class MqttController
     private IMqttService iMqttService;
 
     @GetMapping(value = "/publish")
-    public void publish(String command)
+    public void publish(String device_mac_address, String command) throws JSONException
     {
-        iMqttService.publish(command);
+        iMqttService.publish(device_mac_address, command);
     }
+
 }

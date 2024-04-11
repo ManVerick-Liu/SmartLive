@@ -35,7 +35,7 @@
             <if test="room_id != null">
                 AND r.room_id = #{room_id}
             </if>
-            <if test="room_name != ''">
+            <if test="room_name != '' &amp;&amp; room_name != null">
                 AND r.room_name = #{room_name}
             </if>
             <if test="room_type != null">
