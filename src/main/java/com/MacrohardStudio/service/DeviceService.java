@@ -2,6 +2,8 @@ package com.MacrohardStudio.service;
 
 import com.MacrohardStudio.dao.IDeviceDao;
 import com.MacrohardStudio.model.dro.DeviceDro;
+import com.MacrohardStudio.model.dro.Device_Command;
+import com.MacrohardStudio.model.dro.Device_CommandDro;
 import com.MacrohardStudio.model.dto.ResponseCode;
 import com.MacrohardStudio.model.dto.ResponseData;
 import com.MacrohardStudio.model.enums.Device_Category;
@@ -9,19 +11,22 @@ import com.MacrohardStudio.model.enums.HttpStatusCode;
 import com.MacrohardStudio.model.followTable.Room_Device;
 import com.MacrohardStudio.model.rootTable.Device;
 import com.MacrohardStudio.service.interfaces.IDeviceService;
+import com.MacrohardStudio.service.interfaces.IMqttService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.regex.*;
 
 @Service
 public class DeviceService implements IDeviceService
 {
-
     @Autowired
     private IDeviceDao iDeviceDao;
 
+    @Autowired
+    private IMqttService iMqttService;
 
     public ResponseCode add(DeviceDro deviceDro)
     {
@@ -94,7 +99,7 @@ public class DeviceService implements IDeviceService
         return responseCode;
     }
 
-    public ResponseData<List<Device>> search(Integer device_id, Integer room_id, String device_name, Device_Category device_category)
+    public ResponseData<List<Device>> search(Integer device_id, Integer room_id, String device_name, Device_Category device_category, Integer device_activation)
     {
         ResponseData<List<Device>> responseData = new ResponseData<>();
 
@@ -103,6 +108,7 @@ public class DeviceService implements IDeviceService
         deviceDro.setDevice_category(device_category);
         deviceDro.setDevice_id(device_id);
         deviceDro.setDevice_name(device_name);
+        deviceDro.setDevice_activation(device_activation);
 
         List<Device> result = iDeviceDao.search(deviceDro);
 
@@ -111,5 +117,141 @@ public class DeviceService implements IDeviceService
         return responseData;
     }
 
+    public ResponseCode control(Device_CommandDro device_commandDro) throws JSONException
+    {
+        //先声明并初始化一些变量，如整个接口的返回值、控制命令、设备实体类
+        ResponseCode responseCode = new ResponseCode();
+        Device device = this.iDeviceDao.searchById(device_commandDro.getDevice_id());
+        Integer device_mac_address = device.getDevice_mac_address();
+        Integer command = device_commandDro.getDevice_command().getCommand();
 
+        //取出设备的类型，并对其加以判断
+        Device_Category device_category = device.getDevice_category();
+
+        //当设备是LED灯时进入此分支
+        if(device_category == Device_Category.LED)
+        {
+
+            String rgbData = device_commandDro.getDevice_command().getRgb();
+            //判断命令是否为空
+            if(command != null)
+            {
+                //判断当前设备状态必须是与控制命令互斥的，否则打回请求
+                if(command > 0 && device.getDevice_activation() == 0)
+                {
+                    command = 1;
+                    iMqttService.publish(device_mac_address.toString(), command.toString());
+
+                    responseCode.setCode(HttpStatusCode.OK.getValue());
+                    return responseCode;
+                }
+                else if(command == 0 && device.getDevice_activation() > 0)
+                {
+                    iMqttService.publish(device_mac_address.toString(), command.toString());
+
+                    responseCode.setCode(HttpStatusCode.OK.getValue());
+                    return responseCode;
+                }
+                else
+                {
+                    responseCode.setCode(HttpStatusCode.BAD_REQUEST.getValue());
+                    return responseCode;
+                }
+            }
+
+            if(rgbData != null)
+            {
+                //如果设备不在工作，打回请求
+                if(device.getDevice_activation() == 0)
+                {
+                    responseCode.setCode(HttpStatusCode.BAD_REQUEST.getValue());
+                    return responseCode;
+                }
+                else
+                {
+                    //检查RGB数据是否符合格式要求
+                    //定义符合RGB格式的正则表达式
+                    String rgbPattern = "\\((25[0-5]|2[0-4]\\d|[01]?\\d\\d?)," + "(25[0-5]|2[0-4]\\d|[01]?\\d\\d?)," + "(25[0-5]|2[0-4]\\d|[01]?\\d\\d?)\\)";
+
+                    //使用正则表达式进行匹配
+                    Pattern pattern = Pattern.compile(rgbPattern);
+                    Matcher matcher = pattern.matcher(rgbData);
+
+                    //判断匹配结果
+                    if(matcher.matches())
+                    {
+                        iMqttService.publish(device_mac_address.toString(), rgbData);
+
+                        responseCode.setCode(HttpStatusCode.OK.getValue());
+                        return responseCode;
+                    }
+                    else
+                    {
+                        responseCode.setCode(HttpStatusCode.BAD_REQUEST.getValue());
+                        return responseCode;
+                    }
+                }
+            }
+        }
+
+        //当设备是空调或者风扇时，进入此分支
+        else if (device_category == Device_Category.AC || device_category == Device_Category.Fan)
+        {
+            if(command != null)
+            {
+                //判断当前设备状态必须是与控制命令互斥的，否则打回请求
+                if(command > 0 && device.getDevice_activation() == 0)
+                {
+                    iMqttService.publish(device_mac_address.toString(), command.toString());
+
+                    responseCode.setCode(HttpStatusCode.OK.getValue());
+                    return responseCode;
+                }
+                else if(command == 0 && device.getDevice_activation() > 0)
+                {
+                    iMqttService.publish(device_mac_address.toString(), command.toString());
+
+                    responseCode.setCode(HttpStatusCode.OK.getValue());
+                    return responseCode;
+                }
+                else
+                {
+                    responseCode.setCode(HttpStatusCode.BAD_REQUEST.getValue());
+                    return responseCode;
+                }
+            }
+        }
+
+        //当设备不属于上面的设备类型，且也不是未知设备时，进入此分支
+        else if(device_category != Device_Category.Unknown)
+        {
+            if(command != null)
+            {
+                //判断当前设备状态必须是与控制命令互斥的，否则打回请求
+                if(command > 0 && device.getDevice_activation() == 0)
+                {
+                    command = 1;
+                    iMqttService.publish(device_mac_address.toString(), command.toString());
+
+                    responseCode.setCode(HttpStatusCode.OK.getValue());
+                    return responseCode;
+                }
+                else if(command == 0 && device.getDevice_activation() > 0)
+                {
+                    iMqttService.publish(device_mac_address.toString(), command.toString());
+
+                    responseCode.setCode(HttpStatusCode.OK.getValue());
+                    return responseCode;
+                }
+                else
+                {
+                    responseCode.setCode(HttpStatusCode.BAD_REQUEST.getValue());
+                    return responseCode;
+                }
+            }
+        }
+
+        responseCode.setCode(HttpStatusCode.BAD_REQUEST.getValue());
+        return responseCode;
+    }
 }

@@ -49,6 +49,9 @@
             <if test="device_category != null">
                 AND d.device_category = #{device_category}
             </if>
+            <if test="device_activation != null">
+                AND d.device_activation = #{device_activation}
+            </if>
             <if test="room_id != null">
                 AND EXISTS (
                 SELECT 1
@@ -58,5 +61,10 @@
                 )
             </if>
         </where>
+    </select>
+
+    <select id="searchById" parameterType="java.lang.Integer" resultType="com.MacrohardStudio.model.rootTable.Device">
+        SELECT * FROM device
+        WHERE device_id = #{device_id}
     </select>
 </mapper>

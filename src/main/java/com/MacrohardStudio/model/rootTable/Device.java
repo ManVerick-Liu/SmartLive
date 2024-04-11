@@ -7,6 +7,7 @@ public class Device {
     private String device_name;
     private Device_Category device_category;
     private Integer device_mac_address;
+    private Integer device_activation;
 
     public Integer getDevice_id() {
         return device_id;
@@ -40,5 +41,15 @@ public class Device {
     public void setDevice_category(Device_Category device_category)
     {
         this.device_category = device_category;
+    }
+
+    public Integer getDevice_activation()
+    {
+        return device_activation;
+    }
+
+    public void setDevice_activation(Integer device_activation)
+    {
+        this.device_activation = device_activation;
     }
 }

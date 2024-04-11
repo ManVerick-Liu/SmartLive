@@ -17,5 +17,5 @@ public interface IDeviceDao
     public void modify(Device device);
     public void modifyRoom_Device(Room_Device room_device);
     public List<Device> search(DeviceDro deviceDro);
-
+    public Device searchById(Integer device_id);
 }

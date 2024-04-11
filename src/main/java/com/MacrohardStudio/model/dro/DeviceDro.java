@@ -7,6 +7,7 @@ public class DeviceDro {
     private String device_name;
     private Device_Category device_category;
     private Integer device_mac_address;
+    private Integer device_activation;
     private Integer room_id;
 
     public Integer getDevice_id() {
@@ -47,5 +48,15 @@ public class DeviceDro {
 
     public void setRoom_id(Integer room_id) {
         this.room_id = room_id;
+    }
+
+    public Integer getDevice_activation()
+    {
+        return device_activation;
+    }
+
+    public void setDevice_activation(Integer device_activation)
+    {
+        this.device_activation = device_activation;
     }
 }
