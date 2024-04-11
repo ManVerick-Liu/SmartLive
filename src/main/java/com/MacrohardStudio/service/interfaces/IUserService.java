@@ -1,9 +1,13 @@
 package com.MacrohardStudio.service.interfaces;
 
+import com.MacrohardStudio.model.enums.Device_Category;
+import com.MacrohardStudio.model.rootTable.Device;
 import com.MacrohardStudio.model.rootTable.User;
 import com.MacrohardStudio.model.dto.ResponseCode;
 import com.MacrohardStudio.model.dto.ResponseData;
 import com.MacrohardStudio.model.dto.UserDto;
+
+import java.util.List;
 
 
 public interface IUserService

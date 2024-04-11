@@ -1,5 +1,6 @@
 package com.MacrohardStudio.controller;
 
+import com.MacrohardStudio.annotation.WithoutJWT;
 import com.MacrohardStudio.model.rootTable.Home;
 import com.MacrohardStudio.model.dro.HomeDro;
 import com.MacrohardStudio.model.dto.ResponseCode;
@@ -16,17 +17,19 @@ public class HomeController
 {
     @Autowired
     private IHomeService iHomeService;
-
+    @WithoutJWT
     @PostMapping(value = "/add")
     public ResponseData<Home> add(@RequestBody HomeDro homeDro)
     {
         return iHomeService.add(homeDro);
     }
+    @WithoutJWT
     @PostMapping(value = "/modify")
     public ResponseCode modify(@RequestBody Home home)
     {
         return iHomeService.modify(home);
     }
+    @WithoutJWT
     @GetMapping(value = "/search")
     public ResponseData<List<Home>> search
             (@RequestParam(required = false) Integer home_id,

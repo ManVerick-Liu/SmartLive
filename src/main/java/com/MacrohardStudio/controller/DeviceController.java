@@ -32,11 +32,11 @@ public class DeviceController
 
     @GetMapping(value = "/search")
     public ResponseData<List<Device>> search
-            (@RequestParam Integer device_id,
-             @RequestParam Integer room_id,
-             @RequestParam String device_name,
-             @RequestParam Device_Category device_category,
-             @RequestParam Integer device_activation)
+            (@RequestParam (required = false)Integer device_id,
+             @RequestParam (required = false)Integer room_id,
+             @RequestParam (required = false)String device_name,
+             @RequestParam (required = false)Device_Category device_category,
+             @RequestParam (required = false)Integer device_activation)
     { return iDeviceService.search(device_id, room_id, device_name, device_category, device_activation);}
 
     @PostMapping(value = "/control")

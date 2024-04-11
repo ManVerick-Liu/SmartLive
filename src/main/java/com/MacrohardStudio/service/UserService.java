@@ -19,12 +19,13 @@ public class UserService implements IUserService {
     @Autowired
     private IUserDao iUserDao;
 
+    @Autowired
+    private TokenService tokenService;
+
     public ResponseData<User> search(String user_account)
     {
         User user = new User();
         user.setUser_account(user_account);
-
-
         User result =  iUserDao.search(user);
 
         ResponseData<User> responseData = new ResponseData<>();
@@ -38,11 +39,14 @@ public class UserService implements IUserService {
     {
 
         UserDto result = iUserDao.login(user);
+        result.setToken(tokenService.getToken(result.getUser_name()));
 
         ResponseData<UserDto> responseData = new ResponseData<>();
         responseData.setCode(HttpStatusCode.OK.getValue());
         responseData.setData(result);
+        responseData.setToken(result.getToken());
 
+        //System.out.println(responseData.getToken());
         return responseData;
     }
 
