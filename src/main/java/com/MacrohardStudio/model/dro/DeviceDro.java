@@ -10,6 +10,7 @@ public class DeviceDro {
     private Integer device_activation;
     private Integer room_id;
 
+
     public Integer getDevice_id() {
         return device_id;
     }

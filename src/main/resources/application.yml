@@ -1,11 +1,11 @@
 server:
-  port: 8081
+  port: 8082
 
 spring:
   datasource:
     url: jdbc:mysql://localhost:3306/smart_live?useSSL=false&serverTimezone=Asia/Shanghai
     username: root
-    password: Lqy_12345678910
+    password: 102030
     driver-class-name: com.mysql.cj.jdbc.Driver
 
     druid:
@@ -47,6 +47,7 @@ spring:
         login-password: 123456
         #启用
         enabled: true
+
 
 mybatis:
   mapper-locations: classpath:mapper/*Mapper.xml

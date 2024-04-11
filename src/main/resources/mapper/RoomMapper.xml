@@ -32,6 +32,9 @@
         SELECT r.*
         FROM room r
         <where>
+            <if test = "room_id==null &amp;&amp;room_name==null &amp;&amp;room_type==null&amp;&amp;home_id==null&amp;&amp;device_id==null">
+
+            </if>
             <if test="room_id != null">
                 AND r.room_id = #{room_id}
             </if>
