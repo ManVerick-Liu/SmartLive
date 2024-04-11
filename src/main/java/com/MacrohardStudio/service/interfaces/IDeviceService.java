@@ -14,6 +14,7 @@ import java.util.List;
 public interface IDeviceService
 {
     public ResponseCode control(Device_CommandDro device_commandDro) throws JSONException;
+    public Device searchByMacAddress(Integer device_mac_address);
     public ResponseCode add(DeviceDro deviceDro);
     public ResponseCode delete(Device device);
     public ResponseCode modify(DeviceDro deviceDro);

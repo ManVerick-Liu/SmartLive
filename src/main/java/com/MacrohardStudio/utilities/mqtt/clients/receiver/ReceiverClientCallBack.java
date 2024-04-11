@@ -54,13 +54,13 @@ public class ReceiverClientCallBack implements MqttCallbackExtended {
      */
     @Override
     public void messageArrived(String topic, MqttMessage mqttMessage) throws Exception {
-        String data =  new String(mqttMessage.getPayload());
+        String dataString =  new String(mqttMessage.getPayload());
 
         logger.info("接收消息主题 : " + topic);
         logger.info("接收消息Qos : " + mqttMessage.getQos());
-        logger.info("接收的消息内容 : " + data);
+        logger.info("接收的消息内容 : " + dataString);
 
-        //JSONObject data = new JSONObject(s);
+        JSONObject data = new JSONObject(dataString);
 
         iMqttService.mqttMessageHandler(data);
     }

@@ -254,4 +254,9 @@ public class DeviceService implements IDeviceService
         responseCode.setCode(HttpStatusCode.BAD_REQUEST.getValue());
         return responseCode;
     }
+
+    public Device searchByMacAddress(Integer device_mac_address)
+    {
+        return iDeviceDao.searchByMacAddress(device_mac_address);
+    }
 }

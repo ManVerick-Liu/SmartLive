@@ -18,4 +18,5 @@ public interface IDeviceDao
     public void modifyRoom_Device(Room_Device room_device);
     public List<Device> search(DeviceDro deviceDro);
     public Device searchById(Integer device_id);
+    public Device searchByMacAddress(Integer device_mac_address);
 }

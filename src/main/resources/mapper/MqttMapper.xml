@@ -1,8 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.MacrohardStudio.dao.IHomeDao">
+<mapper namespace="com.MacrohardStudio.dao.IMqttDao">
 
+    <insert id="addSensor_Data_CGS" parameterType="com.MacrohardStudio.model.followTable.Sensor_Data_CGS" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO device_data_cgs(device_id, time_stamp, combustible_gas)
+        VALUES(device_id = #{device_id}, time_stamp = #{time_stamp}, combustible_gas = #{combustible_gas})
+    </insert>
 
+    <insert id="addSensor_Data_CS" parameterType="com.MacrohardStudio.model.followTable.Sensor_Data_CS" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO device_data_cs(device_id, time_stamp, rgb)
+        VALUES(device_id = #{device_id}, time_stamp = #{time_stamp}, rgb = #{rgb})
+    </insert>
+
+    <insert id="addSensor_Data_FS" parameterType="com.MacrohardStudio.model.followTable.Sensor_Data_FS" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO device_data_fs(device_id, time_stamp)
+        VALUES(device_id = #{device_id}, time_stamp = #{time_stamp})
+    </insert>
+
+    <insert id="addSensor_Data_HIS" parameterType="com.MacrohardStudio.model.followTable.Sensor_Data_HIS" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO device_data_his(device_id, time_stamp)
+        VALUES(device_id = #{device_id}, time_stamp = #{time_stamp})
+    </insert>
+
+    <insert id="addSensor_Data_HS" parameterType="com.MacrohardStudio.model.followTable.Sensor_Data_HS" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO device_data_hs(device_id, time_stamp, humidity)
+        VALUES(device_id = #{device_id}, time_stamp = #{time_stamp}, humidity = #{humidity})
+    </insert>
+
+    <insert id="addSensor_Data_HSS" parameterType="com.MacrohardStudio.model.followTable.Sensor_Data_HSS" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO device_data_hss(device_id, time_stamp, harmful_gas)
+        VALUES(device_id = #{device_id}, time_stamp = #{time_stamp}, harmful_gas = #{harmful_gas})
+    </insert>
+
+    <insert id="addSensor_Data_LS" parameterType="com.MacrohardStudio.model.followTable.Sensor_Data_LS" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO device_data_ls(device_id, time_stamp, luminosity)
+        VALUES(device_id = #{device_id}, time_stamp = #{time_stamp}, luminosity = #{luminosity})
+    </insert>
+
+    <insert id="addSensor_Data_TS" parameterType="com.MacrohardStudio.model.followTable.Sensor_Data_TS" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO device_data_ts(device_id, time_stamp, temperature)
+        VALUES(device_id = #{device_id}, time_stamp = #{time_stamp}, temperature = #{temperature})
+    </insert>
 
 </mapper>

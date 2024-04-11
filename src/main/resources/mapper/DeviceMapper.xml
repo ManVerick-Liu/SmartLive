@@ -67,4 +67,9 @@
         SELECT * FROM device
         WHERE device_id = #{device_id}
     </select>
+
+    <select id="searchByMacAddress" parameterType="java.lang.Integer" resultType="com.MacrohardStudio.model.rootTable.Device">
+        SELECT * FROM device
+        WHERE device_mac_address = #{device_mac_address}
+    </select>
 </mapper>
