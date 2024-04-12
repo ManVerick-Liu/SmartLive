@@ -2,11 +2,13 @@ package com.MacrohardStudio.service;
 
 import com.MacrohardStudio.dao.IUserDao;
 import com.MacrohardStudio.model.dto.ResponseCode;
+import com.MacrohardStudio.model.dto.ResponseDataToken;
 import com.MacrohardStudio.model.enums.HttpStatusCode;
 import com.MacrohardStudio.model.rootTable.User;
 import com.MacrohardStudio.model.dto.ResponseData;
 import com.MacrohardStudio.model.dto.UserDto;
 import com.MacrohardStudio.service.interfaces.IUserService;
+import com.MacrohardStudio.utilities.jwt.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +22,7 @@ public class UserService implements IUserService {
     private IUserDao iUserDao;
 
     @Autowired
-    private TokenService tokenService;
+    private JwtUtils jwtUtils;
 
     public ResponseData<User> search(String user_account)
     {
@@ -35,19 +37,17 @@ public class UserService implements IUserService {
         return responseData;
     }
 
-    public ResponseData<UserDto> login(User user)
+    public ResponseDataToken<UserDto> login(User user)
     {
 
         UserDto result = iUserDao.login(user);
-        result.setToken(tokenService.getToken(result.getUser_name()));
 
-        ResponseData<UserDto> responseData = new ResponseData<>();
-        responseData.setCode(HttpStatusCode.OK.getValue());
-        responseData.setData(result);
-        responseData.setToken(result.getToken());
+        ResponseDataToken<UserDto> responseDataToken = new ResponseDataToken<>();
+        responseDataToken.setCode(HttpStatusCode.OK.getValue());
+        responseDataToken.setData(result);
+        responseDataToken.setToken(JwtUtils.getToken(result.getUser_id()));
 
-        //System.out.println(responseData.getToken());
-        return responseData;
+        return responseDataToken;
     }
 
 

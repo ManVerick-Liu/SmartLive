@@ -8,7 +8,6 @@ public class UserDto
     private String user_email;
     private String user_phone;
     private String user_avatar_url;
-    private String token;
 
     public String getUser_id()
     {
@@ -70,11 +69,4 @@ public class UserDto
         this.user_avatar_url = user_avatar_url;
     }
 
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
-    }
 }

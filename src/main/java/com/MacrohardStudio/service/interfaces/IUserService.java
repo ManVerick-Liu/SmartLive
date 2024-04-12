@@ -1,5 +1,6 @@
 package com.MacrohardStudio.service.interfaces;
 
+import com.MacrohardStudio.model.dto.ResponseDataToken;
 import com.MacrohardStudio.model.enums.Device_Category;
 import com.MacrohardStudio.model.rootTable.Device;
 import com.MacrohardStudio.model.rootTable.User;
@@ -13,7 +14,7 @@ import java.util.List;
 public interface IUserService
 {
     public ResponseData<User> search(String user_account);
-    public ResponseData<UserDto> login(User user);
+    public ResponseDataToken<UserDto> login(User user);
     public ResponseCode register(User user);
     public ResponseCode modify(User user);
 

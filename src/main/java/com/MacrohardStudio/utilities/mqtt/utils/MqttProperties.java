@@ -27,7 +27,7 @@ public class MqttProperties
     /**
      * 客户端Id，同一台服务器下，不允许出现重复的客户端id
      */
-    private String clientId;
+    //private String clientId;
 
     /**
      * 默认连接主题
