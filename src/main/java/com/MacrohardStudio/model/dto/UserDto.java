@@ -5,6 +5,8 @@ public class UserDto
     private String user_id;
     private String user_name;
     private String user_account;
+
+    private String password;
     private String user_email;
     private String user_phone;
     private String user_avatar_url;
@@ -76,5 +78,13 @@ public class UserDto
 
     public void setToken(String token) {
         this.token = token;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

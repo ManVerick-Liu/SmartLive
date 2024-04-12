@@ -9,7 +9,7 @@ import com.MacrohardStudio.model.dto.UserDto;
 import com.MacrohardStudio.service.interfaces.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import org.apache.commons.codec.digest.DigestUtils;
 import java.util.Objects;
 
 
@@ -38,6 +38,10 @@ public class UserService implements IUserService {
     public ResponseData<UserDto> login(User user)
     {
 
+        //用户登录请求之后，将其登录密码加密之后进行登录验证服务
+        user.setUser_password(DigestUtils.sha256Hex(user.getUser_password()));
+        System.out.println(user.getUser_account());
+
         UserDto result = iUserDao.login(user);
         result.setToken(tokenService.getToken(result.getUser_name()));
 
@@ -53,7 +57,11 @@ public class UserService implements IUserService {
 
     public ResponseCode register(User user)
     {
+        //用户注册时进行密码加密
+        user.setUser_password(DigestUtils.sha256Hex(user.getUser_password()));
+        //密码加密之后执行dao层操作
         iUserDao.register(user);
+
 
         ResponseCode responseCode = new ResponseCode();
         responseCode.setCode(HttpStatusCode.OK.getValue());

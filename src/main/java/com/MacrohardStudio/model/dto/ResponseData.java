@@ -39,4 +39,5 @@ public class ResponseData<T>
     public void setToken(String token) {
         this.token = token;
     }
+
 }
