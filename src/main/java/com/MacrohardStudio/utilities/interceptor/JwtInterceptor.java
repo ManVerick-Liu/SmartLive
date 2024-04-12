@@ -1,25 +1,16 @@
 package com.MacrohardStudio.utilities.interceptor;
 
-import com.MacrohardStudio.annotation.WithJWT;
-import com.MacrohardStudio.annotation.WithoutJWT;
-import com.MacrohardStudio.utilities.exception.ErrorFormatTokenException;
-import com.MacrohardStudio.utilities.exception.NoneTokenException;
 import com.MacrohardStudio.utilities.jwt.JwtUtils;
-import com.MacrohardStudio.utilities.mqtt.clients.receiver.ReceiverClient;
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.JWTVerifier;
-import com.auth0.jwt.algorithms.Algorithm;
-import com.auth0.jwt.exceptions.*;
+
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.web.method.HandlerMethod;
+
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.lang.reflect.Method;
+import java.util.Enumeration;
+
 
 @Slf4j
 public class JwtInterceptor implements HandlerInterceptor
@@ -27,9 +18,52 @@ public class JwtInterceptor implements HandlerInterceptor
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception
     {
+        /*
+        System.out.println("Incoming HTTP Request:");
+        System.out.println("    URL: " + request.getRequestURL());
+        System.out.println("    Method: " + request.getMethod());
+        System.out.println("    Headers:");
+        Enumeration<String> headerNames = request.getHeaderNames();
+        while (headerNames.hasMoreElements()) {
+            String headerName = headerNames.nextElement();
+            System.out.println("        " + headerName + ": " + request.getHeader(headerName));
+        }
+        System.out.println("    Parameters:");
+        request.getParameterMap().forEach((param, values) -> {
+            System.out.print("        " + param + ": ");
+            for (String value : values) {
+                System.out.print(value + " ");
+            }
+            System.out.println();
+        });
+        System.out.println("    Remote Address: " + request.getRemoteAddr());
+        System.out.println();
+        */
+
+        // 在正式跨域的请求前，浏览器会根据需要，发起一个“PreFlight”（也就是Option请求），用来让服务端返回允许的方法（如get、post），被跨域访问的Origin（来源，或者域），还有是否需要Credentials(认证信息） 三种场景：
+        // 如果跨域的请求是Simple Request（简单请求 ），则不会触发“PreFlight”。Mozilla对于简单请求的要求是： 以下三项必须都成立：
+        // 只能是Get、Head、Post方法
+        // 除了浏览器自己在Http头上加的信息（如Connection、User-Agent），开发者只能加这几个：Accept、Accept-Language、Content-Type、。。。。
+        // Content-Type只能取这几个值： application/x-www-form-urlencoded multipart/form-data text/plain
+        // XHR对象对于HTTP跨域请求有三种：简单请求、Preflighted 请求、Preflighted 认证请求。
+        // 简单请求不需要发送OPTIONS嗅探请求，但只能按发送简单的GET、HEAD或POST请求，且不能自定义HTTP Headers。
+        // Preflighted 请求和认证请求，XHR会首先发送一个OPTIONS嗅探请求，然后XHR会根据OPTIONS请求返回的Access-Control-*等头信息判断是否有对指定站点的访问权限，并最终决定是否发送实际请求信息。
+        // 那么我的get请求呢？ 原来，产生 OPTIONS 请求的原因是：自定义 Headers 头信息导致的。
+        // 浏览器会去向 Server 端发送一个 OPTIONS 请求，看 Server 返回的 "Access-Control-Allow-Headers" 是否有自定义的 header 字段。
+        // 因为我之前没有返回自定义的字段，所以，默认是不允许的，造成了客户端没办法拿到数据。
+        String token = "";
+        // 如果是 OPTIONS 请求，我们就让他通过，不管他
+        if (request.getMethod().equals("OPTIONS")) {
+            response.setStatus(HttpServletResponse.SC_OK);
+            return true;
+            // 如果不是，我们就把token拿到，用来做判断
+        }else {
+            token = request.getHeader("Authorization");
+        }
 
         //从请求头中获取JWT token
-        String token = request.getHeader("Authorization");
+        //String token = request.getHeader("Authorization");
+
 
         //检查token是否存在并且以Bearer开头
         //在Http请求头中的Authentication是用于装载身份验证信息的字段
@@ -43,7 +77,7 @@ public class JwtInterceptor implements HandlerInterceptor
             return false;
         }
 
-        else if (!token.startsWith("Bearer "))
+        if (!token.startsWith("Bearer "))
         {
             //如果token不以Bearer开头，则返回未授权状态
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
@@ -56,26 +90,7 @@ public class JwtInterceptor implements HandlerInterceptor
 
         //验证token是否有效
         String user_id = JwtUtils.verify(token);
-        /*try
-        {
-            user_id = JwtUtils.verify(token);
-        } catch (SignatureVerificationException e)
-        {
-            log.error("无效签名！ 错误 ->", e);
-            return false;
-        } catch (TokenExpiredException e)
-        {
-            log.error("token过期！ 错误 ->", e);
-            return false;
-        } catch (AlgorithmMismatchException e)
-        {
-            log.error("token算法不一致！ 错误 ->", e);
-            return false;
-        } catch (Exception e)
-        {
-            log.error("token无效！ 错误 ->", e);
-            return false;
-        }*/
+
 
         if (user_id == null)
         {

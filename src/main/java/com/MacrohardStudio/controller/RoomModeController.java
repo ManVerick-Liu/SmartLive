@@ -1,7 +1,5 @@
 package com.MacrohardStudio.controller;
 
-import com.MacrohardStudio.annotation.WithJWT;
-import com.MacrohardStudio.annotation.WithoutJWT;
 import com.MacrohardStudio.model.enums.Room_Mode;
 import com.MacrohardStudio.service.interfaces.IRoomModeService;
 import org.springframework.beans.factory.annotation.Autowired;

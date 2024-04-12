@@ -1,7 +1,5 @@
 package com.MacrohardStudio.controller;
 
-import com.MacrohardStudio.annotation.WithJWT;
-import com.MacrohardStudio.annotation.WithoutJWT;
 import com.MacrohardStudio.model.rootTable.Room;
 import com.MacrohardStudio.model.dro.RoomDro;
 import com.MacrohardStudio.model.dto.ResponseCode;
@@ -19,13 +17,13 @@ public class RoomController {
 
     @Autowired
     private IRoomService iRoomService;
-    @WithoutJWT
+
     @PostMapping(value = "/add")
     public ResponseData<Room> add(@RequestBody RoomDro roomDro){return iRoomService.add(roomDro);}
-    @WithoutJWT
+
     @PostMapping(value = "/modify")
     public ResponseCode modify(@RequestBody Room room){return iRoomService.modify(room);}
-    @WithoutJWT
+
     @GetMapping(value = "/search")
     public ResponseData<List<Room>> search
             (@RequestParam(required = false)Integer room_id,

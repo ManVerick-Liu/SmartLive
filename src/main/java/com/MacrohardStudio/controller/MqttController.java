@@ -1,6 +1,5 @@
 package com.MacrohardStudio.controller;
 
-import com.MacrohardStudio.annotation.WithoutJWT;
 import com.MacrohardStudio.service.interfaces.IMqttService;
 import com.MacrohardStudio.utilities.mqtt.clients.receiver.ReceiverClient;
 import com.MacrohardStudio.utilities.mqtt.clients.sender.SenderClient;
@@ -18,7 +17,7 @@ public class MqttController
 {
     @Autowired
     private IMqttService iMqttService;
-    @WithoutJWT
+
     @GetMapping(value = "/publish")
     public void publish(String device_mac_address, String command) throws JSONException
     {
