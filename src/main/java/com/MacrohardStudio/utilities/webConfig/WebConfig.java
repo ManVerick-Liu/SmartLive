@@ -10,9 +10,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class WebConfig implements WebMvcConfigurer
 {
-    @Bean
-    public JwtInterceptor jwtInterceptor() { return new JwtInterceptor(); }
-
     @Override
     public void addCorsMappings(CorsRegistry registry)
     {
@@ -29,8 +26,9 @@ public class WebConfig implements WebMvcConfigurer
         registry.addInterceptor(new JwtInterceptor())
                 //拦截的路径
                 .addPathPatterns("/**")
-                //排除登录接口
-                .excludePathPatterns("/user/login");
+                //排除接口
+                .excludePathPatterns("/user/login", "/user/register");
+
     }
 
 }
