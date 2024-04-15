@@ -34,6 +34,7 @@ public class DeviceService implements IDeviceService
         device.setDevice_name(deviceDro.getDevice_name());
         device.setDevice_category(deviceDro.getDevice_category());
         device.setDevice_mac_address(deviceDro.getDevice_mac_address());
+
         iDeviceDao.add(device);
 
         Room_Device room_device = new Room_Device();
@@ -141,14 +142,16 @@ public class DeviceService implements IDeviceService
                 {
                     command = 1;
                     iMqttService.publish(device_mac_address.toString(), command.toString());
-
+                    //device.setDevice_activation(1);
+                    //updateDeviceActivation(device);
                     responseCode.setCode(HttpStatusCode.OK.getValue());
                     return responseCode;
                 }
                 else if(command == 0 && device.getDevice_activation() > 0)
                 {
                     iMqttService.publish(device_mac_address.toString(), command.toString());
-
+                    //device.setDevice_activation(1);
+                    //updateDeviceActivation(device);
                     responseCode.setCode(HttpStatusCode.OK.getValue());
                     return responseCode;
                 }
@@ -181,7 +184,8 @@ public class DeviceService implements IDeviceService
                     if(matcher.matches())
                     {
                         iMqttService.publish(device_mac_address.toString(), rgbData);
-
+                        //device.setDevice_activation(1);
+                        //updateDeviceActivation(device);
                         responseCode.setCode(HttpStatusCode.OK.getValue());
                         return responseCode;
                     }
@@ -203,14 +207,16 @@ public class DeviceService implements IDeviceService
                 if(command > 0 && device.getDevice_activation() == 0)
                 {
                     iMqttService.publish(device_mac_address.toString(), command.toString());
-
+                    //device.setDevice_activation(1);
+                    //updateDeviceActivation(device);
                     responseCode.setCode(HttpStatusCode.OK.getValue());
                     return responseCode;
                 }
                 else if(command == 0 && device.getDevice_activation() > 0)
                 {
                     iMqttService.publish(device_mac_address.toString(), command.toString());
-
+                    //device.setDevice_activation(1);
+                    //updateDeviceActivation(device);
                     responseCode.setCode(HttpStatusCode.OK.getValue());
                     return responseCode;
                 }
@@ -232,14 +238,16 @@ public class DeviceService implements IDeviceService
                 {
                     command = 1;
                     iMqttService.publish(device_mac_address.toString(), command.toString());
-
+                    //device.setDevice_activation(1);
+                    //updateDeviceActivation(device);
                     responseCode.setCode(HttpStatusCode.OK.getValue());
                     return responseCode;
                 }
                 else if(command == 0 && device.getDevice_activation() > 0)
                 {
                     iMqttService.publish(device_mac_address.toString(), command.toString());
-
+                    //device.setDevice_activation(1);
+                    //updateDeviceActivation(device);
                     responseCode.setCode(HttpStatusCode.OK.getValue());
                     return responseCode;
                 }
@@ -258,5 +266,10 @@ public class DeviceService implements IDeviceService
     public Device searchByMacAddress(Integer device_mac_address)
     {
         return iDeviceDao.searchByMacAddress(device_mac_address);
+    }
+
+    public void updateDeviceActivation(Device device)
+    {
+        iDeviceDao.updateDeviceActivation(device);
     }
 }

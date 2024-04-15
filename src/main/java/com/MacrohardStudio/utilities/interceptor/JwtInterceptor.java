@@ -18,27 +18,17 @@ public class JwtInterceptor implements HandlerInterceptor
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception
     {
-        /*
-        System.out.println("Incoming HTTP Request:");
-        System.out.println("    URL: " + request.getRequestURL());
-        System.out.println("    Method: " + request.getMethod());
-        System.out.println("    Headers:");
-        Enumeration<String> headerNames = request.getHeaderNames();
-        while (headerNames.hasMoreElements()) {
-            String headerName = headerNames.nextElement();
-            System.out.println("        " + headerName + ": " + request.getHeader(headerName));
+        // Debug
+        //printRequestMessage(request);
+
+        // 检查请求头部是否包含 WebSocket 握手所需的特殊字段
+        String upgradeHeader = request.getHeader("Upgrade");
+        String connectionHeader = request.getHeader("Connection");
+        if ("websocket".equalsIgnoreCase(upgradeHeader) && "Upgrade".equalsIgnoreCase(connectionHeader))
+        {
+            // 如果是 WebSocket 握手请求，则执行相应的处理逻辑
+            log.info("检查到WebSocket握手请求，将对该握手请求进行JWT验证");
         }
-        System.out.println("    Parameters:");
-        request.getParameterMap().forEach((param, values) -> {
-            System.out.print("        " + param + ": ");
-            for (String value : values) {
-                System.out.print(value + " ");
-            }
-            System.out.println();
-        });
-        System.out.println("    Remote Address: " + request.getRemoteAddr());
-        System.out.println();
-        */
 
         // 在正式跨域的请求前，浏览器会根据需要，发起一个“PreFlight”（也就是Option请求），用来让服务端返回允许的方法（如get、post），被跨域访问的Origin（来源，或者域），还有是否需要Credentials(认证信息） 三种场景：
         // 如果跨域的请求是Simple Request（简单请求 ），则不会触发“PreFlight”。Mozilla对于简单请求的要求是： 以下三项必须都成立：
@@ -61,36 +51,8 @@ public class JwtInterceptor implements HandlerInterceptor
             token = request.getHeader("Authorization");
         }
 
-        //从请求头中获取JWT token
-        //String token = request.getHeader("Authorization");
-
-
-        //检查token是否存在并且以Bearer开头
-        //在Http请求头中的Authentication是用于装载身份验证信息的字段
-        //如果其中包含的信息是以Bearer开头，这将便于服务器确定该口令是JWT的口令，而不是其他类型的口令
-        //这是Http请求头Authentication字段的规范
-        if (token == null)
-        {
-            //如果token不存在或不以Bearer开头，则返回未授权状态
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            log.error("token为空");
-            return false;
-        }
-
-        if (!token.startsWith("Bearer "))
-        {
-            //如果token不以Bearer开头，则返回未授权状态
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            log.error("token不符合规范");
-            return false;
-        }
-
-        //截取token中的实际令牌部分（略过"Bearer "）
-        token = token.substring(7);
-
         //验证token是否有效
         String user_id = JwtUtils.verify(token);
-
 
         if (user_id == null)
         {
@@ -98,9 +60,6 @@ public class JwtInterceptor implements HandlerInterceptor
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return false;
         }
-
-
-        //如果token验证成功，可以根据需要进行一些其他操作，例如将用户ID放入请求中以供后续处理
 
         //返回true表示继续执行后续的请求处理
         return true;
@@ -118,4 +77,26 @@ public class JwtInterceptor implements HandlerInterceptor
         //在请求完成后调用，可以进行一些清理工作
     }
 
+    private void printRequestMessage(HttpServletRequest request)
+    {
+        System.out.println("Incoming HTTP Request:");
+        System.out.println("    URL: " + request.getRequestURL());
+        System.out.println("    Method: " + request.getMethod());
+        System.out.println("    Headers:");
+        Enumeration<String> headerNames = request.getHeaderNames();
+        while (headerNames.hasMoreElements()) {
+            String headerName = headerNames.nextElement();
+            System.out.println("        " + headerName + ": " + request.getHeader(headerName));
+        }
+        System.out.println("    Parameters:");
+        request.getParameterMap().forEach((param, values) -> {
+            System.out.print("        " + param + ": ");
+            for (String value : values) {
+                System.out.print(value + " ");
+            }
+            System.out.println();
+        });
+        System.out.println("    Remote Address: " + request.getRemoteAddr());
+        System.out.println();
+    }
 }

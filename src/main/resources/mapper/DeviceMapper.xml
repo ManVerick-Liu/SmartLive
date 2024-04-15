@@ -5,8 +5,8 @@
 
     <insert id="add" parameterType="com.MacrohardStudio.model.rootTable.Device" useGeneratedKeys="true" keyProperty="device_id">
         insert into device
-        (device_name,device_category,device_mac_address)
-        values(#{device_name},#{device_category},#{device_mac_address})
+        (device_name, device_category, device_mac_address)
+        values(#{device_name}, #{device_category}, #{device_mac_address})
     </insert>
     <insert id="addRoom_Device" parameterType="com.MacrohardStudio.model.followTable.Room_Device">
         insert into room_device
@@ -27,7 +27,12 @@
         UPDATE device
         SET device_name = #{device_name}
         WHERE device_id = #{device_id}
+    </update>
 
+    <update id="updateDeviceActivation" parameterType="java.lang.Integer">
+        UPDATE device
+        SET device_activation = #{device_activation}
+        WHERE device_id = #{device_id}
     </update>
 
     <update id="modifyRoom_Device" parameterType="com.MacrohardStudio.model.followTable.Room_Device">

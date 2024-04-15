@@ -18,5 +18,6 @@ public interface IDeviceService
     public ResponseCode add(DeviceDro deviceDro);
     public ResponseCode delete(Device device);
     public ResponseCode modify(DeviceDro deviceDro);
+    public void updateDeviceActivation(Device device);
     public ResponseData<List<Device>> search(Integer device_id, Integer room_id, String device_name, Device_Category device_category, Integer device_activation);
 }

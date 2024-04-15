@@ -19,6 +19,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.Calendar;
 
 @Slf4j
@@ -58,6 +59,27 @@ public class JwtUtils
      */
     public static String verify(String token) throws NoneTokenException
     {
+        //检查token是否存在并且以Bearer开头
+        //在Http请求头中的Authentication是用于装载身份验证信息的字段
+        //如果其中包含的信息是以Bearer开头，这将便于服务器确定该口令是JWT的口令，而不是其他类型的口令
+        //这是Http请求头Authentication字段的规范
+        if (token == null || token.isEmpty())
+        {
+            //如果token不存在或不以Bearer开头，则返回未授权状态
+            log.error("token为空");
+            return null;
+        }
+
+        if (!token.startsWith("Bearer "))
+        {
+            //如果token不以Bearer开头，则返回未授权状态
+            log.error("token不符合规范");
+            return null;
+        }
+
+        //截取token中的实际令牌部分（略过"Bearer "）
+        token = token.substring(7);
+
         DecodedJWT jwt;
         try
         {

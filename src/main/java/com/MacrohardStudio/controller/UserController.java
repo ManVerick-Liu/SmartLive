@@ -21,7 +21,6 @@ public class UserController {
     @PostMapping(value = "/login")
     public ResponseDataToken<UserDto> login(@RequestBody User user)
     {
-        log.info("进入登录接口");
         return iUserService.login(user);
     }
 
@@ -34,7 +33,6 @@ public class UserController {
     @GetMapping(value = "/search")
     public ResponseData<User> search(@RequestParam(required = false) String user_account)
     {
-        log.info("进入查询接口");
         return  iUserService.search(user_account);
     }
 

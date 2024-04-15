@@ -63,5 +63,9 @@
         </where>
     </select>
 
+    <select id="searchRoom_IdByDevice_Id" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        SELECT room_id FROM room_device
+        WHERE device_id = #{device_id}
+    </select>
 
 </mapper>
