@@ -6,5 +6,7 @@ public enum Room_Mode
     entertainment,
     sleep,
     study,
-    none
+    none,
+    security,
+    meal;
 }

@@ -77,4 +77,44 @@
         SELECT * FROM device
         WHERE device_mac_address = #{device_mac_address}
     </select>
+
+    <select id="searchDeviceByRoom_Id" parameterType="java.lang.Integer" resultType="com.MacrohardStudio.model.rootTable.Device">
+        SELECT * FROM room_device
+        WHERE room_id = #{room_id}
+    </select>
+
+    <select id="searchSensor_Data_TS" parameterType="java.lang.Integer" resultType="com.MacrohardStudio.model.followTable.Sensor_Data_TS">
+        SELECT * FROM sensor_data_ts
+        WHERE device_id = #{device_id}
+        ORDER BY time_stamp DESC LIMIT 1;
+    </select>
+
+    <select id="searchSensor_Data_HS" parameterType="java.lang.Integer" resultType="com.MacrohardStudio.model.followTable.Sensor_Data_HS">
+        SELECT * FROM sensor_data_hs
+        WHERE device_id = #{device_id}
+        ORDER BY time_stamp DESC LIMIT 1;
+    </select>
+
+    <select id="searchSensor_Data_CGS" parameterType="java.lang.Integer" resultType="com.MacrohardStudio.model.followTable.Sensor_Data_CGS">
+        SELECT * FROM sensor_data_cgs
+        WHERE device_id = #{device_id}
+        ORDER BY time_stamp DESC LIMIT 1;
+    </select>
+
+    <select id="searchSensor_Data_HSS" parameterType="java.lang.Integer" resultType="com.MacrohardStudio.model.followTable.Sensor_Data_HSS">
+        SELECT * FROM sensor_data_hss
+        WHERE device_id = #{device_id}
+        ORDER BY time_stamp DESC LIMIT 1;
+    </select>
+    <select id="searchSensor_Data_HIS" parameterType="java.lang.Integer" resultType="com.MacrohardStudio.model.followTable.Sensor_Data_HIS">
+        SELECT * FROM sensor_data_his
+        WHERE device_id = #{device_id}
+        ORDER BY time_stamp DESC LIMIT 1;
+    </select>
+
+    <select id="searchSensor_Data_FS" parameterType="java.lang.Integer" resultType="com.MacrohardStudio.model.followTable.Sensor_Data_FS">
+        SELECT * FROM sensor_data_fs
+        WHERE device_id = #{device_id}
+        ORDER BY time_stamp DESC LIMIT 1;
+    </select>
 </mapper>

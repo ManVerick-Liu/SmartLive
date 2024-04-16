@@ -1,5 +1,6 @@
 package com.MacrohardStudio.utilities.mqtt.clients.sender;
 
+import com.MacrohardStudio.model.enums.LogTitle;
 import com.MacrohardStudio.utilities.mqtt.utils.MqttProperties;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.paho.client.mqttv3.*;
@@ -128,7 +129,7 @@ public class SenderClient
      * @param qos   连接方式
      */
     public boolean subscribe(String topic, int qos) {
-        logger.info("==============开始订阅主题==============" + topic);
+        logger.info(LogTitle.MQTT.toString() + " 开始订阅主题：" + topic);
         try {
             client.subscribe(topic, qos);
         } catch (MqttException e)
@@ -145,7 +146,7 @@ public class SenderClient
      * @param topic
      */
     public void unsubscribe(String topic) {
-        logger.info("==============开始取消订阅主题==============" + topic);
+        //logger.info(LogTitle.MQTT.toString() + " 取消订阅主题：" + topic);
         try {
             client.unsubscribe(topic);
         } catch (MqttException e) {

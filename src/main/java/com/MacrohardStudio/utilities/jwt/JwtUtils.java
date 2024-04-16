@@ -1,5 +1,6 @@
 package com.MacrohardStudio.utilities.jwt;
 
+import com.MacrohardStudio.model.enums.LogTitle;
 import com.MacrohardStudio.model.rootTable.User;
 import com.MacrohardStudio.service.interfaces.IUserService;
 import com.MacrohardStudio.utilities.exception.NoneTokenException;
@@ -66,14 +67,14 @@ public class JwtUtils
         if (token == null || token.isEmpty())
         {
             //如果token不存在或不以Bearer开头，则返回未授权状态
-            log.error("token为空");
+            log.error(LogTitle.JWT.toString() + " token为空");
             return null;
         }
 
         if (!token.startsWith("Bearer "))
         {
             //如果token不以Bearer开头，则返回未授权状态
-            log.error("token不符合规范");
+            log.error(LogTitle.JWT.toString() + " token不符合规范");
             return null;
         }
 
@@ -87,19 +88,19 @@ public class JwtUtils
             jwt = verifier.verify(token);
         } catch (SignatureVerificationException e)
         {
-            log.error("无效的签名 ->", e);
+            log.error(LogTitle.JWT.toString() + " 无效的签名 ->", e);
             return null;
         } catch (TokenExpiredException e)
         {
-            log.error("token过期 ->", e);
+            log.error(LogTitle.JWT.toString() + " token过期 ->", e);
             return null;
         } catch (AlgorithmMismatchException e)
         {
-            log.error("token算法不一致 ->", e);
+            log.error(LogTitle.JWT.toString() + " token算法不一致 ->", e);
             return null;
         } catch (Exception e)
         {
-            log.error("token无效 ->", e);
+            log.error(LogTitle.JWT.toString() + " token无效 ->", e);
             return null;
         }
 

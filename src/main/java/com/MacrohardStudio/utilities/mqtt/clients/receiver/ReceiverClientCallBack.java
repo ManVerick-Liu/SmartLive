@@ -1,6 +1,7 @@
 package com.MacrohardStudio.utilities.mqtt.clients.receiver;
 
 import com.MacrohardStudio.dao.IMqttDao;
+import com.MacrohardStudio.model.enums.LogTitle;
 import com.MacrohardStudio.service.interfaces.IMqttService;
 import com.MacrohardStudio.utilities.mqtt.utils.MqttProperties;
 import lombok.extern.slf4j.Slf4j;
@@ -40,9 +41,9 @@ public class ReceiverClientCallBack implements MqttCallbackExtended {
      */
     @Override
     public void connectionLost(Throwable throwable) {
-        logger.info("连接断开，可以做重连");
+        //logger.info(LogTitle.MQTT.toString() + " 与EMQX服务器连接断开，可以做重连");
         if (ReceiverClient.client == null || !ReceiverClient.client.isConnected()) {
-            logger.info("emqx重新连接....................................................");
+            //logger.info(LogTitle.MQTT.toString() + " 与EMQX服务器成功重新连接");
    
         }
     }
@@ -57,9 +58,7 @@ public class ReceiverClientCallBack implements MqttCallbackExtended {
     public void messageArrived(String topic, MqttMessage mqttMessage) throws Exception {
         String dataString =  new String(mqttMessage.getPayload());
 
-        logger.info("接收消息主题 : " + topic);
-        logger.info("接收消息Qos : " + mqttMessage.getQos());
-        logger.info("接收的消息内容 : " + dataString);
+        logger.info(LogTitle.MQTT.toString() + " 消息来自主题：{} Qos：{} 消息内容：{}", topic, mqttMessage.getQos(), dataString);
 
         JSONObject data = new JSONObject(dataString);
 
@@ -98,8 +97,7 @@ public class ReceiverClientCallBack implements MqttCallbackExtended {
      */
     @Override
     public void connectComplete(boolean b, String s) {
-        logger.info("--------------------ClientId:"
-                + ReceiverClient.client.getClientId() + "客户端连接成功！--------------------");
+        //logger.info(LogTitle.MQTT.toString() + " 客户端id：{} 连接成功", ReceiverClient.client.getClientId());
 
         //订阅主题
         receiverClient.subscribe("publish", mqttProperties.getQos());

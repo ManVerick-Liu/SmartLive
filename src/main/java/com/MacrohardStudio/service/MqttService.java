@@ -1,10 +1,7 @@
 package com.MacrohardStudio.service;
 
 import com.MacrohardStudio.dao.IMqttDao;
-import com.MacrohardStudio.model.enums.Device_Category;
-import com.MacrohardStudio.model.enums.Fire_Detection;
-import com.MacrohardStudio.model.enums.HIS_Detection;
-import com.MacrohardStudio.model.enums.WebSocket_Message_Type;
+import com.MacrohardStudio.model.enums.*;
 import com.MacrohardStudio.model.followTable.*;
 import com.MacrohardStudio.model.rootTable.Device;
 import com.MacrohardStudio.service.interfaces.IDeviceService;
@@ -16,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.boot.configurationprocessor.json.JSONObject;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
@@ -42,14 +40,22 @@ public class MqttService implements IMqttService
     @Autowired
     private IRoomService iRoomService;
 
-
-    public void publish(String device_mac_address, String command) throws JSONException
+    @Async
+    public void publish(String device_mac_address, String command)
     {
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put(device_mac_address, command);
-        senderClient.publish("subtopic", jsonObject.toString());
+        try
+        {
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put(device_mac_address, command);
+            senderClient.publish("subtopic", jsonObject.toString());
+        }
+        catch (JSONException e)
+        {
+            e.printStackTrace();
+        }
     }
 
+    @Async
     public void mqttMessageHandler(JSONObject data) throws JSONException
     {
         Iterator<String> keyIterator = data.keys();
@@ -59,7 +65,7 @@ public class MqttService implements IMqttService
         Device device = iDeviceService.searchByMacAddress(device_mac_address);
         if (device == null)
         {
-            log.info("该设备未被纳入系统管理");
+            log.info(LogTitle.MQTT.toString() + " 设备 {} 未被纳入系统管理，只能接收但是无法处理数据", device_mac_address);
             return;
         }
 
@@ -78,7 +84,7 @@ public class MqttService implements IMqttService
             case LED:
             {
                 //更新设备状态
-                if(Objects.equals(data.getString(key), "00"))
+                if(Objects.equals(data.getString(key), "000"))
                 {
                     this.updateDevice_Activation(device, 0);
                 }
@@ -179,7 +185,7 @@ public class MqttService implements IMqttService
             case CGS:
             {
                 //更新设备状态
-                this.updateDevice_Activation(device, 1);
+                this.updateDevice_Activation(device, data.getInt(key));
 
                 //数据持久化
                 Sensor_Data_CGS sensor_data_cgs = new Sensor_Data_CGS();
@@ -298,7 +304,7 @@ public class MqttService implements IMqttService
             case LS:
             {
                 //更新设备状态
-                this.updateDevice_Activation(device, 1);
+                this.updateDevice_Activation(device, data.getInt(key));
 
                 //数据持久化
                 Sensor_Data_LS sensor_data_ls = new Sensor_Data_LS();
@@ -321,7 +327,7 @@ public class MqttService implements IMqttService
             case HSS:
             {
                 //更新设备状态
-                this.updateDevice_Activation(device, 1);
+                this.updateDevice_Activation(device, data.getInt(key));
 
                 //数据持久化
                 Sensor_Data_HSS sensor_data_hss = new Sensor_Data_HSS();

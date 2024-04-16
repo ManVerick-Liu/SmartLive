@@ -1,5 +1,6 @@
 package com.MacrohardStudio.utilities.interceptor;
 
+import com.MacrohardStudio.model.enums.LogTitle;
 import com.MacrohardStudio.utilities.jwt.JwtUtils;
 
 import lombok.extern.slf4j.Slf4j;
@@ -27,7 +28,7 @@ public class JwtInterceptor implements HandlerInterceptor
         if ("websocket".equalsIgnoreCase(upgradeHeader) && "Upgrade".equalsIgnoreCase(connectionHeader))
         {
             // 如果是 WebSocket 握手请求，则执行相应的处理逻辑
-            log.info("检查到WebSocket握手请求，将对该握手请求进行JWT验证");
+            log.info(LogTitle.MQTT.toString() + " 检查到WebSocket握手请求，将对该握手请求进行JWT验证");
         }
 
         // 在正式跨域的请求前，浏览器会根据需要，发起一个“PreFlight”（也就是Option请求），用来让服务端返回允许的方法（如get、post），被跨域访问的Origin（来源，或者域），还有是否需要Credentials(认证信息） 三种场景：
