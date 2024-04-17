@@ -40,7 +40,6 @@ public class MqttService implements IMqttService
     @Autowired
     private IRoomService iRoomService;
 
-    @Async
     public void publish(String device_mac_address, String command)
     {
         try

@@ -391,7 +391,7 @@ public class RoomModeService implements IRoomModeService {
         for (Integer led_id : led_ids)
         {
             device_commandDro.setDevice_id(led_id);
-            device_command.setCommand(10);
+            device_command.setCommand(2);
             device_commandDro.setDevice_command(device_command);
             iDeviceService.control(device_commandDro);
         }
@@ -473,13 +473,21 @@ public class RoomModeService implements IRoomModeService {
     public ResponseCode noneModeHandler(ResponseCode responseCode, Integer room_id)
     {
         List<Integer> device_ids = iDeviceService.searchDevice_IdByRoom_Id(room_id);
-        List<Device> devices = new ArrayList<>();
+        //List<Device> devices = new ArrayList<>();
+
+        Device_CommandDro device_commandDro = new Device_CommandDro();
+        Device_Command device_command = new Device_Command();
+
         for (Integer device_id : device_ids)
         {
-            devices.add(iDeviceService.searchDeviceByDevice_Id(device_id));
+            device_commandDro.setDevice_id(device_id);
+            device_command.setCommand(0);
+            device_commandDro.setDevice_command(device_command);
+            iDeviceService.control(device_commandDro);
+            //devices.add(iDeviceService.searchDeviceByDevice_Id(device_id));
         }
 
-        List<Integer> led_ids = new ArrayList<>();
+        /*List<Integer> led_ids = new ArrayList<>();
         List<Integer> displayer_ids = new ArrayList<>();
         List<Integer> audio_ids = new ArrayList<>();
         for (Device device : devices)
@@ -521,7 +529,7 @@ public class RoomModeService implements IRoomModeService {
             device_command.setCommand(0);
             device_commandDro.setDevice_command(device_command);
             iDeviceService.control(device_commandDro);
-        }
+        }*/
 
         responseCode.setCode(HttpStatusCode.OK.getValue());
         return responseCode;
@@ -683,7 +691,7 @@ public class RoomModeService implements IRoomModeService {
         for (Integer led_id : led_ids)
         {
             device_commandDro.setDevice_id(led_id);
-            device_command.setCommand(100);
+            device_command.setCommand(3);
             device_commandDro.setDevice_command(device_command);
             iDeviceService.control(device_commandDro);
         }
