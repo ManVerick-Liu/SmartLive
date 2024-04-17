@@ -179,6 +179,7 @@ public class WebSocketService
         {
             log.info(LogTitle.WebSocket.toString() + " 没有会话，发送消息失败");
         }
+        log.info(LogTitle.WebSocket.toString() + " ==> 服务端给当前 {} 个在线的客户端群发消息 message = {}", onlineSessionClientCount, message);
         for (Session toSession : onlineSessionClientList)
         {
             // 排除掉自己
@@ -188,7 +189,6 @@ public class WebSocketService
                 toSession.getAsyncRemote().sendText(message);
             }*/
             // 异步发送
-            log.info(LogTitle.WebSocket.toString() + " ==> 服务端给客户端群发消息 toSession_id = {}, message = {}", toSession.getId(), message);
             toSession.getAsyncRemote().sendText(message);
         }
     }

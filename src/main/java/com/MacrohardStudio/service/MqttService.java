@@ -172,12 +172,12 @@ public class MqttService implements IMqttService
                 else this.updateDevice_Activation(device, 0);
 
                 //通过WebSocket进行数据转发
-                this.wrapToJsonAndSendWebSocketMessage(
+                /*this.wrapToJsonAndSendWebSocketMessage(
                         WebSocket_Message_Type.device_data_transfer,
                         device_id,
                         device_category,
                         data.getString(key),
-                        data.getString(key));
+                        data.getString(key));*/
 
                 break;
             }
@@ -240,14 +240,14 @@ public class MqttService implements IMqttService
                 else this.updateDevice_Activation(device, 0);
 
                 //数据持久化
-                if(HIS_Detection.valueOf(data.getString(key)) != HIS_Detection.detected)
+                if(HIS_Detection.fromInt(data.getInt(key)) != HIS_Detection.detected)
                 {
                     break;
                 }
                 Sensor_Data_HIS sensor_data_his = new Sensor_Data_HIS();
                 sensor_data_his.setDevice_id(device_id);
                 sensor_data_his.setTime_stamp(timeStamp);
-                sensor_data_his.setHis_detection(HIS_Detection.valueOf(data.getString(key)));
+                sensor_data_his.setHis_detection(HIS_Detection.fromInt(data.getInt(key)));
                 iMqttDao.addSensor_Data_HIS(sensor_data_his);
 
                 //通过WebSocket进行数据转发
@@ -406,14 +406,14 @@ public class MqttService implements IMqttService
                 else this.updateDevice_Activation(device, 0);
 
                 //数据持久化
-                if(Fire_Detection.valueOf(data.getString(key)) != Fire_Detection.fire)
+                if(Fire_Detection.fromInt(data.getInt(key)) != Fire_Detection.fire)
                 {
                     break;
                 }
                 Sensor_Data_FS sensor_data_fs = new Sensor_Data_FS();
                 sensor_data_fs.setDevice_id(device_id);
                 sensor_data_fs.setTime_stamp(timeStamp);
-                sensor_data_fs.setFire_detection(Fire_Detection.valueOf(data.getString(key)));
+                sensor_data_fs.setFire_detection(Fire_Detection.fromInt(data.getInt(key)));
                 iMqttDao.addSensor_Data_FS(sensor_data_fs);
 
                 //通过WebSocket进行数据转发
