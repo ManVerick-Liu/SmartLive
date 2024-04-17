@@ -5,18 +5,12 @@ import com.MacrohardStudio.model.dro.Device_Command;
 import com.MacrohardStudio.model.dro.Device_CommandDro;
 import com.MacrohardStudio.model.dto.ResponseCode;
 import com.MacrohardStudio.model.enums.*;
-import com.MacrohardStudio.model.followTable.Sensor_Data_HS;
-import com.MacrohardStudio.model.followTable.Sensor_Data_TS;
 import com.MacrohardStudio.model.rootTable.Device;
-import com.MacrohardStudio.model.rootTable.Mode;
 import com.MacrohardStudio.model.rootTable.Room;
 import com.MacrohardStudio.service.interfaces.IDeviceService;
 import com.MacrohardStudio.service.interfaces.IRoomModeService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.configurationprocessor.json.JSONException;
-import org.springframework.boot.configurationprocessor.json.JSONObject;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.*;

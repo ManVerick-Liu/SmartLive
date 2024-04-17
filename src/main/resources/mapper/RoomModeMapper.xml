@@ -2,11 +2,11 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.MacrohardStudio.dao.IRoomModeDao">
-    <select id="select" parameterType="com.MacrohardStudio.model.rootTable.Mode" resultType="com.MacrohardStudio.model.rootTable.Mode">
-        select room_mode,room_name from room
+    <select id="select" parameterType="java.lang.Integer" resultType="com.MacrohardStudio.model.rootTable.Room">
+        select * from room
         where room_id = #{room_id}
     </select>
-    <update id="change" parameterType="com.MacrohardStudio.model.rootTable.Mode">
+    <update id="change" parameterType="com.MacrohardStudio.model.rootTable.Room">
         update room
         set room_mode = #{room_mode}
         where room_id = #{room_id}
