@@ -189,7 +189,7 @@ public class WebSocketService
             }*/
             // 异步发送
             log.info(LogTitle.WebSocket.toString() + " ==> 服务端给客户端群发消息 toSession_id = {}, message = {}", toSession.getId(), message);
-            //session.getAsyncRemote().sendText(message);
+            toSession.getAsyncRemote().sendText(message);
         }
     }
 

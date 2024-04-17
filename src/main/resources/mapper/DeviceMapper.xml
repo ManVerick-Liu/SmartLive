@@ -78,9 +78,14 @@
         WHERE device_mac_address = #{device_mac_address}
     </select>
 
-    <select id="searchDeviceByRoom_Id" parameterType="java.lang.Integer" resultType="com.MacrohardStudio.model.rootTable.Device">
-        SELECT * FROM room_device
+    <select id="searchDevice_IdByRoom_Id" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        SELECT device_id FROM room_device
         WHERE room_id = #{room_id}
+    </select>
+
+    <select id="searchDeviceByDevice_Id" parameterType="java.lang.Integer" resultType="com.MacrohardStudio.model.rootTable.Device">
+        SELECT * FROM device
+        WHERE device_id = #{device_id}
     </select>
 
     <select id="searchSensor_Data_TS" parameterType="java.lang.Integer" resultType="com.MacrohardStudio.model.followTable.Sensor_Data_TS">

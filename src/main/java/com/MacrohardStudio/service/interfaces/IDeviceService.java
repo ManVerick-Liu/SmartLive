@@ -21,7 +21,8 @@ public interface IDeviceService
     public ResponseCode modify(DeviceDro deviceDro);
     public void updateDeviceActivation(Device device);
     public ResponseData<List<Device>> search(Integer device_id, Integer room_id, String device_name, Device_Category device_category, Integer device_activation);
-    public List<Device> searchDeviceByRoom_Id(Integer room_id);
+    public List<Integer> searchDevice_IdByRoom_Id(Integer room_id);
+    public Device searchDeviceByDevice_Id(Integer device_id);
     public Sensor_Data_TS searchSensor_Data_TS(Integer device_id);
     public Sensor_Data_HS searchSensor_Data_HS(Integer device_id);
     public Sensor_Data_CGS searchSensor_Data_CGS(Integer device_id);

@@ -172,7 +172,8 @@ public class DeviceService implements IDeviceService
                 return responseCode;
             }
 
-            if(rgbData != null)
+            //项目已弃用RGB数据
+            /*if(rgbData != null)
             {
                 //如果设备不在工作，打回请求
                 if(device.getDevice_activation() == 0)
@@ -205,7 +206,7 @@ public class DeviceService implements IDeviceService
                         return responseCode;
                     }
                 }
-            }
+            }*/
         }
 
         //当设备是空调或者风扇时，进入此分支
@@ -304,9 +305,14 @@ public class DeviceService implements IDeviceService
         iDeviceDao.updateDeviceActivation(device);
     }
 
-    public List<Device> searchDeviceByRoom_Id(Integer room_id)
+    public List<Integer> searchDevice_IdByRoom_Id(Integer room_id)
     {
-        return iDeviceDao.searchDeviceByRoom_Id(room_id);
+        return iDeviceDao.searchDevice_IdByRoom_Id(room_id);
+    }
+
+    public Device searchDeviceByDevice_Id(Integer device_id)
+    {
+        return iDeviceDao.searchDeviceByDevice_Id(device_id);
     }
 
     public Sensor_Data_TS searchSensor_Data_TS(Integer device_id)

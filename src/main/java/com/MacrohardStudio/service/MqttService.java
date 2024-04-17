@@ -51,6 +51,7 @@ public class MqttService implements IMqttService
         }
         catch (JSONException e)
         {
+            log.error(LogTitle.MQTT.toString() + " 发送消息失败");
             e.printStackTrace();
         }
     }
@@ -65,7 +66,7 @@ public class MqttService implements IMqttService
         Device device = iDeviceService.searchByMacAddress(device_mac_address);
         if (device == null)
         {
-            log.info(LogTitle.MQTT.toString() + " 设备 {} 未被纳入系统管理，只能接收但是无法处理数据", device_mac_address);
+            log.info(LogTitle.MQTT.toString() + " 设备 {} 未被纳入系统管理，无法处理数据", device_mac_address);
             return;
         }
 
@@ -103,8 +104,12 @@ public class MqttService implements IMqttService
 
             case Buzzer:
             {
-                //更新设备状态
-                this.updateDevice_Activation(device, data.getInt(key));
+                if (data.getInt(key) != 0)
+                {
+                    //更新设备状态
+                    this.updateDevice_Activation(device, 1);
+                }
+                else this.updateDevice_Activation(device, 0);
 
                 //通过WebSocket进行数据转发
                 this.wrapToJsonAndSendWebSocketMessage(
@@ -119,8 +124,12 @@ public class MqttService implements IMqttService
 
             case Displayer:
             {
-                //更新设备状态
-                this.updateDevice_Activation(device, data.getInt(key));
+                if (data.getInt(key) != 0)
+                {
+                    //更新设备状态
+                    this.updateDevice_Activation(device, 1);
+                }
+                else this.updateDevice_Activation(device, 0);
 
                 //通过WebSocket进行数据转发
                 this.wrapToJsonAndSendWebSocketMessage(
@@ -135,8 +144,12 @@ public class MqttService implements IMqttService
 
             case AC:
             {
-                //更新设备状态
-                this.updateDevice_Activation(device, data.getInt(key));
+                if (data.getInt(key) != 0)
+                {
+                    //更新设备状态
+                    this.updateDevice_Activation(device, 1);
+                }
+                else this.updateDevice_Activation(device, 0);
 
                 //通过WebSocket进行数据转发
                 this.wrapToJsonAndSendWebSocketMessage(
@@ -151,8 +164,12 @@ public class MqttService implements IMqttService
 
             case Fan:
             {
-                //更新设备状态
-                this.updateDevice_Activation(device, data.getInt(key));
+                if (data.getInt(key) != 0)
+                {
+                    //更新设备状态
+                    this.updateDevice_Activation(device, 1);
+                }
+                else this.updateDevice_Activation(device, 0);
 
                 //通过WebSocket进行数据转发
                 this.wrapToJsonAndSendWebSocketMessage(
@@ -167,8 +184,12 @@ public class MqttService implements IMqttService
 
             case Audio:
             {
-                //更新设备状态
-                this.updateDevice_Activation(device, data.getInt(key));
+                if (data.getInt(key) != 0)
+                {
+                    //更新设备状态
+                    this.updateDevice_Activation(device, 1);
+                }
+                else this.updateDevice_Activation(device, 0);
 
                 //通过WebSocket进行数据转发
                 this.wrapToJsonAndSendWebSocketMessage(
@@ -184,8 +205,12 @@ public class MqttService implements IMqttService
             //传感器类
             case CGS:
             {
-                //更新设备状态
-                this.updateDevice_Activation(device, data.getInt(key));
+                if (data.getInt(key) != 0)
+                {
+                    //更新设备状态
+                    this.updateDevice_Activation(device, 1);
+                }
+                else this.updateDevice_Activation(device, 0);
 
                 //数据持久化
                 Sensor_Data_CGS sensor_data_cgs = new Sensor_Data_CGS();
@@ -207,8 +232,12 @@ public class MqttService implements IMqttService
 
             case HIS:
             {
-                //更新设备状态
-                this.updateDevice_Activation(device, 1);
+                if (data.getInt(key) != 0)
+                {
+                    //更新设备状态
+                    this.updateDevice_Activation(device, 1);
+                }
+                else this.updateDevice_Activation(device, 0);
 
                 //数据持久化
                 if(HIS_Detection.valueOf(data.getString(key)) != HIS_Detection.detected)
@@ -234,8 +263,12 @@ public class MqttService implements IMqttService
 
             case TS:
             {
-                //更新设备状态
-                this.updateDevice_Activation(device, 1);
+                if (data.getInt(key) != 0)
+                {
+                    //更新设备状态
+                    this.updateDevice_Activation(device, 1);
+                }
+                else this.updateDevice_Activation(device, 0);
 
                 //数据持久化
                 Sensor_Data_TS sensor_data_ts = new Sensor_Data_TS();
@@ -257,8 +290,12 @@ public class MqttService implements IMqttService
 
             case HS:
             {
-                //更新设备状态
-                this.updateDevice_Activation(device, 1);
+                if (data.getInt(key) != 0)
+                {
+                    //更新设备状态
+                    this.updateDevice_Activation(device, 1);
+                }
+                else this.updateDevice_Activation(device, 0);
 
                 //数据持久化
                 Sensor_Data_HS sensor_data_hs = new Sensor_Data_HS();
@@ -280,8 +317,12 @@ public class MqttService implements IMqttService
 
             case CS:
             {
-                //更新设备状态
-                this.updateDevice_Activation(device, 1);
+                if (data.getInt(key) != 0)
+                {
+                    //更新设备状态
+                    this.updateDevice_Activation(device, 1);
+                }
+                else this.updateDevice_Activation(device, 0);
 
                 //数据持久化
                 Sensor_Data_CS sensor_data_cs = new Sensor_Data_CS();
@@ -303,8 +344,12 @@ public class MqttService implements IMqttService
 
             case LS:
             {
-                //更新设备状态
-                this.updateDevice_Activation(device, data.getInt(key));
+                if (data.getInt(key) != 0)
+                {
+                    //更新设备状态
+                    this.updateDevice_Activation(device, 1);
+                }
+                else this.updateDevice_Activation(device, 0);
 
                 //数据持久化
                 Sensor_Data_LS sensor_data_ls = new Sensor_Data_LS();
@@ -326,8 +371,12 @@ public class MqttService implements IMqttService
 
             case HSS:
             {
-                //更新设备状态
-                this.updateDevice_Activation(device, data.getInt(key));
+                if (data.getInt(key) != 0)
+                {
+                    //更新设备状态
+                    this.updateDevice_Activation(device, 1);
+                }
+                else this.updateDevice_Activation(device, 0);
 
                 //数据持久化
                 Sensor_Data_HSS sensor_data_hss = new Sensor_Data_HSS();
@@ -349,8 +398,12 @@ public class MqttService implements IMqttService
 
             case FS:
             {
-                //更新设备状态
-                this.updateDevice_Activation(device, 1);
+                if (data.getInt(key) != 0)
+                {
+                    //更新设备状态
+                    this.updateDevice_Activation(device, 1);
+                }
+                else this.updateDevice_Activation(device, 0);
 
                 //数据持久化
                 if(Fire_Detection.valueOf(data.getString(key)) != Fire_Detection.fire)
@@ -377,8 +430,12 @@ public class MqttService implements IMqttService
             //未知设备类
             case Unknown:
             {
-                //更新设备状态
-                this.updateDevice_Activation(device, 1);
+                if (data.getInt(key) != 0)
+                {
+                    //更新设备状态
+                    this.updateDevice_Activation(device, 1);
+                }
+                else this.updateDevice_Activation(device, 0);
 
                 //通过WebSocket进行数据转发
                 this.wrapToJsonAndSendWebSocketMessage(

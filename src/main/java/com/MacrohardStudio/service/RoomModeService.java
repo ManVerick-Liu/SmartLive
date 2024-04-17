@@ -8,17 +8,17 @@ import com.MacrohardStudio.model.enums.*;
 import com.MacrohardStudio.model.followTable.Sensor_Data_HS;
 import com.MacrohardStudio.model.followTable.Sensor_Data_TS;
 import com.MacrohardStudio.model.rootTable.Device;
+import com.MacrohardStudio.model.rootTable.Room;
 import com.MacrohardStudio.service.interfaces.IDeviceService;
 import com.MacrohardStudio.service.interfaces.IRoomModeService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.configurationprocessor.json.JSONException;
+import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.PriorityQueue;
-import java.util.Vector;
+import java.util.*;
 
 @Slf4j
 @Service
@@ -30,8 +30,10 @@ public class RoomModeService implements IRoomModeService {
     @Autowired
     private IDeviceService iDeviceService;
 
-    public ResponseCode change(Integer room_id, Room_Mode room_mode)
+    public ResponseCode change(Room room)
     {
+        Integer room_id = room.getRoom_id();
+        Room_Mode room_mode = room.getRoom_mode();
         ResponseCode responseCode = new ResponseCode();
         iRoomModeDao.change(room_id, room_mode);
         switch (room_mode)
@@ -78,7 +80,12 @@ public class RoomModeService implements IRoomModeService {
 
     public ResponseCode purificationModeHandler(ResponseCode responseCode, Integer room_id)
     {
-        List<Device> devices = iDeviceService.searchDeviceByRoom_Id(room_id);
+        List<Integer> device_ids = iDeviceService.searchDevice_IdByRoom_Id(room_id);
+        List<Device> devices = new ArrayList<>();
+        for (Integer device_id : device_ids)
+        {
+            devices.add(iDeviceService.searchDeviceByDevice_Id(device_id));
+        }
 
         List<Integer> ts_ids = new ArrayList<>();
         List<Integer> hs_ids = new ArrayList<>();
@@ -299,7 +306,12 @@ public class RoomModeService implements IRoomModeService {
 
     public ResponseCode sleepModeHandler(ResponseCode responseCode, Integer room_id)
     {
-        List<Device> devices = iDeviceService.searchDeviceByRoom_Id(room_id);
+        List<Integer> device_ids = iDeviceService.searchDevice_IdByRoom_Id(room_id);
+        List<Device> devices = new ArrayList<>();
+        for (Integer device_id : device_ids)
+        {
+            devices.add(iDeviceService.searchDeviceByDevice_Id(device_id));
+        }
 
         List<Integer> led_ids = new ArrayList<>();
         List<Integer> displayer_ids = new ArrayList<>();
@@ -351,7 +363,12 @@ public class RoomModeService implements IRoomModeService {
 
     public ResponseCode studyModeHandler(ResponseCode responseCode, Integer room_id)
     {
-        List<Device> devices = iDeviceService.searchDeviceByRoom_Id(room_id);
+        List<Integer> device_ids = iDeviceService.searchDevice_IdByRoom_Id(room_id);
+        List<Device> devices = new ArrayList<>();
+        for (Integer device_id : device_ids)
+        {
+            devices.add(iDeviceService.searchDeviceByDevice_Id(device_id));
+        }
 
         List<Integer> led_ids = new ArrayList<>();
         List<Integer> displayer_ids = new ArrayList<>();
@@ -403,7 +420,12 @@ public class RoomModeService implements IRoomModeService {
 
     public ResponseCode entertainmentModeHandler(ResponseCode responseCode, Integer room_id)
     {
-        List<Device> devices = iDeviceService.searchDeviceByRoom_Id(room_id);
+        List<Integer> device_ids = iDeviceService.searchDevice_IdByRoom_Id(room_id);
+        List<Device> devices = new ArrayList<>();
+        for (Integer device_id : device_ids)
+        {
+            devices.add(iDeviceService.searchDeviceByDevice_Id(device_id));
+        }
 
         List<Integer> led_ids = new ArrayList<>();
         List<Integer> displayer_ids = new ArrayList<>();
@@ -454,7 +476,12 @@ public class RoomModeService implements IRoomModeService {
     }
     public ResponseCode noneModeHandler(ResponseCode responseCode, Integer room_id)
     {
-        List<Device> devices = iDeviceService.searchDeviceByRoom_Id(room_id);
+        List<Integer> device_ids = iDeviceService.searchDevice_IdByRoom_Id(room_id);
+        List<Device> devices = new ArrayList<>();
+        for (Integer device_id : device_ids)
+        {
+            devices.add(iDeviceService.searchDeviceByDevice_Id(device_id));
+        }
 
         List<Integer> led_ids = new ArrayList<>();
         List<Integer> displayer_ids = new ArrayList<>();
@@ -506,7 +533,12 @@ public class RoomModeService implements IRoomModeService {
 
     public ResponseCode securityModeHandler(ResponseCode responseCode, Integer room_id)
     {
-        List<Device> devices = iDeviceService.searchDeviceByRoom_Id(room_id);
+        List<Integer> device_ids = iDeviceService.searchDevice_IdByRoom_Id(room_id);
+        List<Device> devices = new ArrayList<>();
+        for (Integer device_id : device_ids)
+        {
+            devices.add(iDeviceService.searchDeviceByDevice_Id(device_id));
+        }
 
         List<Integer> cgs_ids = new ArrayList<>();
         List<Integer> hss_ids = new ArrayList<>();
@@ -538,7 +570,26 @@ public class RoomModeService implements IRoomModeService {
         }
 
         //可以检查房间中是否有对应设备
-
+        if(cgs_ids.isEmpty())
+        {
+            log.info(LogTitle.Main.toString() + " 该房间没有可燃气体传感器");
+        }
+        if(hss_ids.isEmpty())
+        {
+            log.info(LogTitle.Main.toString() + " 该房间没有有害气体传感器");
+        }
+        if(his_ids.isEmpty())
+        {
+            log.info(LogTitle.Main.toString() + " 该房间没有人体感应传感器");
+        }
+        if(fs_ids.isEmpty())
+        {
+            log.info(LogTitle.Main.toString() + " 该房间没有火焰传感器");
+        }
+        if(buzzer_ids.isEmpty())
+        {
+            log.info(LogTitle.Main.toString() + " 该房间没有蜂鸣器");
+        }
         //
 
         List<Integer> cgs_data_list = new ArrayList<>();
@@ -585,6 +636,7 @@ public class RoomModeService implements IRoomModeService {
 
         if (cgs_data_average > 400 || hss_data_average > 400 || his_detection == HIS_Detection.detected || fire_detection == Fire_Detection.fire)
         {
+            log.info(LogTitle.Main + " 安防系统启动，当前检测到危险");
             for (Integer buzzer_id : buzzer_ids)
             {
                 Device_CommandDro device_commandDro = new Device_CommandDro();
@@ -595,6 +647,7 @@ public class RoomModeService implements IRoomModeService {
                 iDeviceService.control(device_commandDro);
             }
         }
+        else log.info(LogTitle.Main + " 安防系统启动，当前并未检测到危险");
 
         responseCode.setCode(HttpStatusCode.OK.getValue());
         return responseCode;
@@ -602,7 +655,12 @@ public class RoomModeService implements IRoomModeService {
 
     public ResponseCode mealModeHandler(ResponseCode responseCode, Integer room_id)
     {
-        List<Device> devices = iDeviceService.searchDeviceByRoom_Id(room_id);
+        List<Integer> device_ids = iDeviceService.searchDevice_IdByRoom_Id(room_id);
+        List<Device> devices = new ArrayList<>();
+        for (Integer device_id : device_ids)
+        {
+            devices.add(iDeviceService.searchDeviceByDevice_Id(device_id));
+        }
 
         List<Integer> led_ids = new ArrayList<>();
         List<Integer> displayer_ids = new ArrayList<>();
