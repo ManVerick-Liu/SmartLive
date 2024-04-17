@@ -1,5 +1,7 @@
 package com.MacrohardStudio.utilities.mqtt.clients.sender;
 
+import com.MacrohardStudio.model.enums.LogTitle;
+import com.MacrohardStudio.utilities.mqtt.clients.receiver.ReceiverClient;
 import com.MacrohardStudio.utilities.mqtt.utils.MqttProperties;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
@@ -17,13 +19,12 @@ import java.io.UnsupportedEncodingException;
 
 @Slf4j
 @Component
-public class SenderClientCallBack implements MqttCallbackExtended {
-
+public class SenderClientCallBack implements MqttCallbackExtended
+{
     private static final Logger logger = LoggerFactory.getLogger(SenderClientCallBack.class);
 
     @Autowired
     private SenderClient senderClient;
-
 
     @Autowired
     private MqttProperties mqttProperties;
@@ -35,10 +36,10 @@ public class SenderClientCallBack implements MqttCallbackExtended {
      */
     @Override
     public void connectionLost(Throwable throwable) {
-        logger.info("连接断开，可以做重连");
+        //logger.info(LogTitle.MQTT.toString() + " 与EMQX服务器连接断开，可以做重连");
         if (SenderClient.client == null || !SenderClient.client.isConnected()) {
-            logger.info("emqx重新连接....................................................");
-   
+            //logger.info(LogTitle.MQTT.toString() + " 与EMQX服务器成功重新连接");
+
         }
     }
 
@@ -51,18 +52,7 @@ public class SenderClientCallBack implements MqttCallbackExtended {
     @Override
     public void messageArrived(String topic, MqttMessage mqttMessage) throws Exception
     {
-        /*
-        String s =  new String(mqttMessage.getPayload());
 
-        logger.info("接收消息主题 : " + topic);
-        logger.info("接收消息Qos : " + mqttMessage.getQos());
-        logger.info("接收的消息内容 : " + s);
-
-        JSONObject data = new JSONObject(s);
-
-        //向数据库插入数据
-        //iMqttBackendClientService.dataInsert(data);
-        */
     }
 
     /**
@@ -71,19 +61,21 @@ public class SenderClientCallBack implements MqttCallbackExtended {
      * @param token token
      */
     @Override
-    public void deliveryComplete(IMqttDeliveryToken token) {
+    public void deliveryComplete(IMqttDeliveryToken token)
+    {
         String[] topics = token.getTopics();
-        for (String topic : topics) {
-            logger.info("向主题：" + topic + "发送消息成功！");
-        }
-        try {
+        try
+        {
             MqttMessage message = token.getMessage();
             byte[] payload = message.getPayload();
             String s = new String(payload, "UTF-8");
-            logger.info("消息的内容是：" + s);
-        } catch (MqttException e) {
-            e.printStackTrace();
-        } catch (UnsupportedEncodingException e) {
+            for (String topic : topics)
+            {
+                logger.info(LogTitle.MQTT.toString() + " 客户端id：{} 向主题：{} 发送消息：{}", senderClient.clientId, topic, s);
+            }
+        }
+        catch (MqttException | UnsupportedEncodingException e)
+        {
             e.printStackTrace();
         }
     }
@@ -96,10 +88,9 @@ public class SenderClientCallBack implements MqttCallbackExtended {
      */
     @Override
     public void connectComplete(boolean b, String s) {
-        logger.info("--------------------ClientId:"
-                + SenderClient.client.getClientId() + "客户端连接成功！--------------------");
+        logger.info(LogTitle.MQTT.toString() + " 客户端id：{} 连接成功", SenderClient.client.getClientId());
 
         //订阅主题
-        //senderClient.subscribe("subtopic", mqttProperties.getQos());
+        senderClient.subscribe("subtopic", mqttProperties.getQos());
     }
 }

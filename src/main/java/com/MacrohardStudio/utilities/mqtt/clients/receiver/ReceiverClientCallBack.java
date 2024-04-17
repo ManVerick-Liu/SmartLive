@@ -1,6 +1,7 @@
 package com.MacrohardStudio.utilities.mqtt.clients.receiver;
 
 import com.MacrohardStudio.dao.IMqttDao;
+import com.MacrohardStudio.model.enums.LogTitle;
 import com.MacrohardStudio.service.interfaces.IMqttService;
 import com.MacrohardStudio.utilities.mqtt.utils.MqttProperties;
 import lombok.extern.slf4j.Slf4j;
@@ -12,15 +13,20 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.configurationprocessor.json.JSONObject;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.io.UnsupportedEncodingException;
+import java.util.Iterator;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 
 @Slf4j
 @Component
-public class ReceiverClientCallBack implements MqttCallbackExtended {
-
+public class ReceiverClientCallBack implements MqttCallbackExtended
+{
     private static final Logger logger = LoggerFactory.getLogger(ReceiverClientCallBack.class);
 
     @Autowired
@@ -32,6 +38,9 @@ public class ReceiverClientCallBack implements MqttCallbackExtended {
     @Autowired
     private MqttProperties mqttProperties;
 
+    private final Queue<String> messageQueue = new ConcurrentLinkedQueue<>();
+    private volatile boolean isProcessing = false;
+
     /**
      * 客户端断开后触发
      *
@@ -39,9 +48,9 @@ public class ReceiverClientCallBack implements MqttCallbackExtended {
      */
     @Override
     public void connectionLost(Throwable throwable) {
-        logger.info("连接断开，可以做重连");
+        //logger.info(LogTitle.MQTT.toString() + " 与EMQX服务器连接断开，可以做重连");
         if (ReceiverClient.client == null || !ReceiverClient.client.isConnected()) {
-            logger.info("emqx重新连接....................................................");
+            //logger.info(LogTitle.MQTT.toString() + " 与EMQX服务器成功重新连接");
    
         }
     }
@@ -53,16 +62,27 @@ public class ReceiverClientCallBack implements MqttCallbackExtended {
      * @param mqttMessage 消息
      */
     @Override
-    public void messageArrived(String topic, MqttMessage mqttMessage) throws Exception {
+    public void messageArrived(String topic, MqttMessage mqttMessage) throws Exception
+    {
         String dataString =  new String(mqttMessage.getPayload());
 
-        logger.info("接收消息主题 : " + topic);
-        logger.info("接收消息Qos : " + mqttMessage.getQos());
-        logger.info("接收的消息内容 : " + dataString);
+        logger.info(LogTitle.MQTT.toString() + " 客户端id：{} 收到来自主题 {} 的消息：{}", receiverClient.clientId, topic, dataString);
 
-        JSONObject data = new JSONObject(dataString);
+        // 将收到的消息放入队列
+        messageQueue.offer(dataString);
 
-        iMqttService.mqttMessageHandler(data);
+        // 如果当前没有处理消息的线程在运行，则启动一个新的线程来处理队列中的消息
+        if (!isProcessing) {
+            synchronized (this) {
+                if (!isProcessing) {
+                    isProcessing = true;
+                    processQueue();
+                }
+            }
+        }
+
+        //JSONObject data = new JSONObject(dataString);
+        //iMqttService.mqttMessageHandler(data);
     }
 
     /**
@@ -73,20 +93,7 @@ public class ReceiverClientCallBack implements MqttCallbackExtended {
     @Override
     public void deliveryComplete(IMqttDeliveryToken token)
     {
-        /*String[] topics = token.getTopics();
-        for (String topic : topics) {
-            logger.info("向主题：" + topic + "发送消息成功！");
-        }
-        try {
-            MqttMessage message = token.getMessage();
-            byte[] payload = message.getPayload();
-            String s = new String(payload, "UTF-8");
-            logger.info("消息的内容是：" + s);
-        } catch (MqttException e) {
-            e.printStackTrace();
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }*/
+
     }
 
     /**
@@ -96,11 +103,25 @@ public class ReceiverClientCallBack implements MqttCallbackExtended {
      * @param s
      */
     @Override
-    public void connectComplete(boolean b, String s) {
-        logger.info("--------------------ClientId:"
-                + ReceiverClient.client.getClientId() + "客户端连接成功！--------------------");
+    public void connectComplete(boolean b, String s)
+    {
+        logger.info(LogTitle.MQTT.toString() + " 客户端id：{} 连接成功", ReceiverClient.client.getClientId());
 
         //订阅主题
         receiverClient.subscribe("publish", mqttProperties.getQos());
+    }
+
+    // 处理消息队列的方法
+    private void processQueue() {
+        while (!messageQueue.isEmpty()) {
+            String message = messageQueue.poll(); // 从队列中取出消息进行处理
+            try {
+                JSONObject data = new JSONObject(message);
+                iMqttService.mqttMessageHandler(data); // 处理消息的逻辑
+            } catch (Exception e) {
+                logger.error("处理 MQTT 消息时出错：" + e.getMessage());
+            }
+        }
+        isProcessing = false; // 处理完毕后将标志位重置为 false，表示可以再次处理新的消息
     }
 }

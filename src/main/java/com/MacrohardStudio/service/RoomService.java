@@ -71,4 +71,9 @@ public class RoomService implements IRoomService {
 
         return responseData;
     }
+
+    public Integer searchRoom_IdByDevice_Id(Integer device_id)
+    {
+        return iRoomDao.searchRoom_IdByDevice_Id(device_id);
+    }
 }

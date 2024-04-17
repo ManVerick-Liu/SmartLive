@@ -8,17 +8,20 @@ import com.MacrohardStudio.model.dto.ResponseCode;
 import com.MacrohardStudio.model.dto.ResponseData;
 import com.MacrohardStudio.model.enums.Device_Category;
 import com.MacrohardStudio.model.enums.HttpStatusCode;
-import com.MacrohardStudio.model.followTable.Room_Device;
+import com.MacrohardStudio.model.followTable.*;
 import com.MacrohardStudio.model.rootTable.Device;
 import com.MacrohardStudio.service.interfaces.IDeviceService;
 import com.MacrohardStudio.service.interfaces.IMqttService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.configurationprocessor.json.JSONException;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.regex.*;
 
+@Slf4j
 @Service
 public class DeviceService implements IDeviceService
 {
@@ -34,6 +37,7 @@ public class DeviceService implements IDeviceService
         device.setDevice_name(deviceDro.getDevice_name());
         device.setDevice_category(deviceDro.getDevice_category());
         device.setDevice_mac_address(deviceDro.getDevice_mac_address());
+
         iDeviceDao.add(device);
 
         Room_Device room_device = new Room_Device();
@@ -117,7 +121,7 @@ public class DeviceService implements IDeviceService
         return responseData;
     }
 
-    public ResponseCode control(Device_CommandDro device_commandDro) throws JSONException
+    public ResponseCode control(Device_CommandDro device_commandDro)
     {
         //先声明并初始化一些变量，如整个接口的返回值、控制命令、设备实体类
         ResponseCode responseCode = new ResponseCode();
@@ -137,18 +141,20 @@ public class DeviceService implements IDeviceService
             if(command != null)
             {
                 //判断当前设备状态必须是与控制命令互斥的，否则打回请求
-                if(command > 0 && device.getDevice_activation() == 0)
+                /*if(command > 0 && command != 9 && device.getDevice_activation() == 9)
                 {
                     command = 1;
                     iMqttService.publish(device_mac_address.toString(), command.toString());
-
+                    //device.setDevice_activation(1);
+                    //updateDeviceActivation(device);
                     responseCode.setCode(HttpStatusCode.OK.getValue());
                     return responseCode;
                 }
                 else if(command == 0 && device.getDevice_activation() > 0)
                 {
                     iMqttService.publish(device_mac_address.toString(), command.toString());
-
+                    //device.setDevice_activation(1);
+                    //updateDeviceActivation(device);
                     responseCode.setCode(HttpStatusCode.OK.getValue());
                     return responseCode;
                 }
@@ -156,10 +162,18 @@ public class DeviceService implements IDeviceService
                 {
                     responseCode.setCode(HttpStatusCode.BAD_REQUEST.getValue());
                     return responseCode;
-                }
+                }*/
+
+                //不检查命令与设备状态的互斥
+                iMqttService.publish(device_mac_address.toString(), command.toString());
+                //device.setDevice_activation(1);
+                //updateDeviceActivation(device);
+                responseCode.setCode(HttpStatusCode.OK.getValue());
+                return responseCode;
             }
 
-            if(rgbData != null)
+            //项目已弃用RGB数据
+            /*if(rgbData != null)
             {
                 //如果设备不在工作，打回请求
                 if(device.getDevice_activation() == 0)
@@ -181,7 +195,8 @@ public class DeviceService implements IDeviceService
                     if(matcher.matches())
                     {
                         iMqttService.publish(device_mac_address.toString(), rgbData);
-
+                        //device.setDevice_activation(1);
+                        //updateDeviceActivation(device);
                         responseCode.setCode(HttpStatusCode.OK.getValue());
                         return responseCode;
                     }
@@ -191,7 +206,7 @@ public class DeviceService implements IDeviceService
                         return responseCode;
                     }
                 }
-            }
+            }*/
         }
 
         //当设备是空调或者风扇时，进入此分支
@@ -200,16 +215,22 @@ public class DeviceService implements IDeviceService
             if(command != null)
             {
                 //判断当前设备状态必须是与控制命令互斥的，否则打回请求
-                if(command > 0 && device.getDevice_activation() == 0)
+                /*if(command > 0 && command != 9 && device.getDevice_activation() == 9)
                 {
                     iMqttService.publish(device_mac_address.toString(), command.toString());
+
+                    device.setDevice_activation(command);
+                    updateDeviceActivation(device);
 
                     responseCode.setCode(HttpStatusCode.OK.getValue());
                     return responseCode;
                 }
-                else if(command == 0 && device.getDevice_activation() > 0)
+                else if(command == 9 && device.getDevice_activation() != 9)
                 {
                     iMqttService.publish(device_mac_address.toString(), command.toString());
+
+                    device.setDevice_activation(command);
+                    updateDeviceActivation(device);
 
                     responseCode.setCode(HttpStatusCode.OK.getValue());
                     return responseCode;
@@ -218,7 +239,14 @@ public class DeviceService implements IDeviceService
                 {
                     responseCode.setCode(HttpStatusCode.BAD_REQUEST.getValue());
                     return responseCode;
-                }
+                }*/
+
+                //不检查命令与设备状态的互斥
+                iMqttService.publish(device_mac_address.toString(), command.toString());
+                //device.setDevice_activation(1);
+                //updateDeviceActivation(device);
+                responseCode.setCode(HttpStatusCode.OK.getValue());
+                return responseCode;
             }
         }
 
@@ -228,17 +256,22 @@ public class DeviceService implements IDeviceService
             if(command != null)
             {
                 //判断当前设备状态必须是与控制命令互斥的，否则打回请求
-                if(command > 0 && device.getDevice_activation() == 0)
+                /*if(command > 0 && command != 9 && device.getDevice_activation() == 9)
                 {
-                    command = 1;
                     iMqttService.publish(device_mac_address.toString(), command.toString());
+
+                    device.setDevice_activation(command);
+                    updateDeviceActivation(device);
 
                     responseCode.setCode(HttpStatusCode.OK.getValue());
                     return responseCode;
                 }
-                else if(command == 0 && device.getDevice_activation() > 0)
+                else if(command == 9 && device.getDevice_activation() != 9)
                 {
                     iMqttService.publish(device_mac_address.toString(), command.toString());
+
+                    device.setDevice_activation(command);
+                    updateDeviceActivation(device);
 
                     responseCode.setCode(HttpStatusCode.OK.getValue());
                     return responseCode;
@@ -247,7 +280,14 @@ public class DeviceService implements IDeviceService
                 {
                     responseCode.setCode(HttpStatusCode.BAD_REQUEST.getValue());
                     return responseCode;
-                }
+                }*/
+
+                //不检查命令与设备状态的互斥
+                iMqttService.publish(device_mac_address.toString(), command.toString());
+                //device.setDevice_activation(1);
+                //updateDeviceActivation(device);
+                responseCode.setCode(HttpStatusCode.OK.getValue());
+                return responseCode;
             }
         }
 
@@ -258,5 +298,50 @@ public class DeviceService implements IDeviceService
     public Device searchByMacAddress(Integer device_mac_address)
     {
         return iDeviceDao.searchByMacAddress(device_mac_address);
+    }
+
+    public void updateDeviceActivation(Device device)
+    {
+        iDeviceDao.updateDeviceActivation(device);
+    }
+
+    public List<Integer> searchDevice_IdByRoom_Id(Integer room_id)
+    {
+        return iDeviceDao.searchDevice_IdByRoom_Id(room_id);
+    }
+
+    public Device searchDeviceByDevice_Id(Integer device_id)
+    {
+        return iDeviceDao.searchDeviceByDevice_Id(device_id);
+    }
+
+    public Sensor_Data_TS searchSensor_Data_TS(Integer device_id)
+    {
+        return iDeviceDao.searchSensor_Data_TS(device_id);
+    }
+
+    public Sensor_Data_HS searchSensor_Data_HS(Integer device_id)
+    {
+        return iDeviceDao.searchSensor_Data_HS(device_id);
+    }
+
+    public Sensor_Data_CGS searchSensor_Data_CGS(Integer device_id)
+    {
+        return iDeviceDao.searchSensor_Data_CGS(device_id);
+    }
+
+    public Sensor_Data_HSS searchSensor_Data_HSS(Integer device_id)
+    {
+        return iDeviceDao.searchSensor_Data_HSS(device_id);
+    }
+
+    public Sensor_Data_HIS searchSensor_Data_HIS(Integer device_id)
+    {
+        return iDeviceDao.searchSensor_Data_HIS(device_id);
+    }
+
+    public Sensor_Data_FS searchSensor_Data_FS(Integer device_id)
+    {
+        return iDeviceDao.searchSensor_Data_FS(device_id);
     }
 }

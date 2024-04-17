@@ -15,4 +15,5 @@ public interface IRoomDao
     public void modify(Room room);
     public Room select(Integer room_id);
     public List<Room> search(RoomDro roomDro);
+    public Integer searchRoom_IdByDevice_Id(Integer device_id);
 }
