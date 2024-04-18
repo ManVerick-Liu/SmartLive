@@ -9,8 +9,12 @@ import com.MacrohardStudio.model.rootTable.Device;
 import com.MacrohardStudio.model.rootTable.Room;
 import com.MacrohardStudio.service.interfaces.IDeviceService;
 import com.MacrohardStudio.service.interfaces.IRoomModeService;
+import com.MacrohardStudio.service.interfaces.IRoomService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.configurationprocessor.json.JSONObject;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -25,6 +29,62 @@ public class RoomModeService implements IRoomModeService {
     @Autowired
     private IDeviceService iDeviceService;
 
+    @Autowired
+    private IRoomService iRoomService;
+
+    // 每隔10秒执行一次
+    @Async
+    @Scheduled(fixedRate = 10000)
+    public void roomModeHandler()
+    {
+        log.info(LogTitle.Main + " 开始执行定时任务：房间模式监测");
+        List<Room> rooms = iRoomService.searchAllRoom();
+
+        for (Room room : rooms)
+        {
+            Room_Mode room_mode = room.getRoom_mode();
+            Integer room_id = room.getRoom_id();
+            switch (room_mode)
+            {
+                case purification:
+                {
+                    purificationModeHandler(room_id);
+                    break;
+                }
+                case sleep:
+                {
+                    sleepModeHandler(room_id);
+                    break;
+                }
+                case study:
+                {
+                    studyModeHandler(room_id);
+                    break;
+                }
+                case entertainment:
+                {
+                    entertainmentModeHandler(room_id);
+                    break;
+                }
+                case security:
+                {
+                    securityModeHandler(room_id);
+                    break;
+                }
+                case meal:
+                {
+                    mealModeHandler(room_id);
+                    break;
+                }
+                case none:
+                {
+                    //noneModeHandler(room_id);
+                    break;
+                }
+            }
+        }
+    }
+
     public ResponseCode change(Room room)
     {
         Integer room_id = room.getRoom_id();
@@ -36,37 +96,44 @@ public class RoomModeService implements IRoomModeService {
         {
             case purification:
             {
-                purificationModeHandler(responseCode, room_id);
+                purificationModeHandler(room_id);
+                responseCode.setCode(HttpStatusCode.OK.getValue());
                 break;
             }
             case sleep:
             {
-                sleepModeHandler(responseCode, room_id);
+                sleepModeHandler(room_id);
+                responseCode.setCode(HttpStatusCode.OK.getValue());
                 break;
             }
             case study:
             {
-                studyModeHandler(responseCode, room_id);
+                studyModeHandler(room_id);
+                responseCode.setCode(HttpStatusCode.OK.getValue());
                 break;
             }
             case entertainment:
             {
-                entertainmentModeHandler(responseCode, room_id);
+                entertainmentModeHandler(room_id);
+                responseCode.setCode(HttpStatusCode.OK.getValue());
                 break;
             }
             case security:
             {
-                securityModeHandler(responseCode, room_id);
+                securityModeHandler(room_id);
+                responseCode.setCode(HttpStatusCode.OK.getValue());
                 break;
             }
             case meal:
             {
-                mealModeHandler(responseCode, room_id);
+                mealModeHandler(room_id);
+                responseCode.setCode(HttpStatusCode.OK.getValue());
                 break;
             }
             case none:
             {
-                noneModeHandler(responseCode, room_id);
+                noneModeHandler(room_id);
+                responseCode.setCode(HttpStatusCode.OK.getValue());
                 break;
             }
         }
@@ -74,7 +141,7 @@ public class RoomModeService implements IRoomModeService {
         return responseCode;
     }
 
-    public ResponseCode purificationModeHandler(ResponseCode responseCode, Integer room_id)
+    public void purificationModeHandler(Integer room_id)
     {
         List<Integer> device_ids = iDeviceService.searchDevice_IdByRoom_Id(room_id);
         List<Device> devices = new ArrayList<>();
@@ -109,9 +176,8 @@ public class RoomModeService implements IRoomModeService {
 
         if(ts_ids.isEmpty() || hs_ids.isEmpty())
         {
-            responseCode.setCode(HttpStatusCode.BAD_REQUEST.getValue());
             log.error(LogTitle.Main.toString() + " 该房间没有温度或者湿度传感器");
-            return responseCode;
+            return;
         }
 
         List<Float> temperatureList = new ArrayList<>();
@@ -296,11 +362,9 @@ public class RoomModeService implements IRoomModeService {
                 iDeviceService.control(device_commandDro_Fan);
             }
         }
-        responseCode.setCode(HttpStatusCode.OK.getValue());
-        return responseCode;
     }
 
-    public ResponseCode sleepModeHandler(ResponseCode responseCode, Integer room_id)
+    public void sleepModeHandler(Integer room_id)
     {
         List<Integer> device_ids = iDeviceService.searchDevice_IdByRoom_Id(room_id);
         List<Device> devices = new ArrayList<>();
@@ -352,12 +416,9 @@ public class RoomModeService implements IRoomModeService {
             device_commandDro.setDevice_command(device_command);
             iDeviceService.control(device_commandDro);
         }
-
-        responseCode.setCode(HttpStatusCode.OK.getValue());
-        return responseCode;
     }
 
-    public ResponseCode studyModeHandler(ResponseCode responseCode, Integer room_id)
+    public void studyModeHandler(Integer room_id)
     {
         List<Integer> device_ids = iDeviceService.searchDevice_IdByRoom_Id(room_id);
         List<Device> devices = new ArrayList<>();
@@ -409,12 +470,9 @@ public class RoomModeService implements IRoomModeService {
             device_commandDro.setDevice_command(device_command);
             iDeviceService.control(device_commandDro);
         }
-
-        responseCode.setCode(HttpStatusCode.OK.getValue());
-        return responseCode;
     }
 
-    public ResponseCode entertainmentModeHandler(ResponseCode responseCode, Integer room_id)
+    public void entertainmentModeHandler(Integer room_id)
     {
         List<Integer> device_ids = iDeviceService.searchDevice_IdByRoom_Id(room_id);
         List<Device> devices = new ArrayList<>();
@@ -466,11 +524,8 @@ public class RoomModeService implements IRoomModeService {
             device_commandDro.setDevice_command(device_command);
             iDeviceService.control(device_commandDro);
         }
-
-        responseCode.setCode(HttpStatusCode.OK.getValue());
-        return responseCode;
     }
-    public ResponseCode noneModeHandler(ResponseCode responseCode, Integer room_id)
+    public void noneModeHandler(Integer room_id)
     {
         List<Integer> device_ids = iDeviceService.searchDevice_IdByRoom_Id(room_id);
         //List<Device> devices = new ArrayList<>();
@@ -530,12 +585,9 @@ public class RoomModeService implements IRoomModeService {
             device_commandDro.setDevice_command(device_command);
             iDeviceService.control(device_commandDro);
         }*/
-
-        responseCode.setCode(HttpStatusCode.OK.getValue());
-        return responseCode;
     }
 
-    public ResponseCode securityModeHandler(ResponseCode responseCode, Integer room_id)
+    public void securityModeHandler(Integer room_id)
     {
         List<Integer> device_ids = iDeviceService.searchDevice_IdByRoom_Id(room_id);
         List<Device> devices = new ArrayList<>();
@@ -652,12 +704,9 @@ public class RoomModeService implements IRoomModeService {
             }
         }
         else log.info(LogTitle.Main + " 安防系统启动，当前并未检测到危险");
-
-        responseCode.setCode(HttpStatusCode.OK.getValue());
-        return responseCode;
     }
 
-    public ResponseCode mealModeHandler(ResponseCode responseCode, Integer room_id)
+    public void mealModeHandler(Integer room_id)
     {
         List<Integer> device_ids = iDeviceService.searchDevice_IdByRoom_Id(room_id);
         List<Device> devices = new ArrayList<>();
@@ -709,9 +758,6 @@ public class RoomModeService implements IRoomModeService {
             device_commandDro.setDevice_command(device_command);
             iDeviceService.control(device_commandDro);
         }
-
-        responseCode.setCode(HttpStatusCode.OK.getValue());
-        return responseCode;
     }
 
     //计算 List 中数据的平均值（泛型方法）

@@ -14,4 +14,5 @@ public interface IRoomService
     public ResponseData<List<Room>> search(Integer room_id, Room_Type room_type, String room_name, Integer home_id, Integer device_id);
     public ResponseCode modify(Room room);
     public Integer searchRoom_IdByDevice_Id(Integer device_id);
+    public List<Room> searchAllRoom();
 }

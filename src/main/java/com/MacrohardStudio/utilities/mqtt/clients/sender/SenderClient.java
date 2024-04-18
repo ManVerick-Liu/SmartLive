@@ -53,7 +53,7 @@ public class SenderClient
             options.setPassword(mqttProperties.getPassword().toCharArray());
             options.setConnectionTimeout(mqttProperties.getTimeout());
             options.setKeepAliveInterval(mqttProperties.getKeepAlive());
-            options.setAutomaticReconnect(mqttProperties.getReconnect());
+            options.setAutomaticReconnect(false);
             options.setCleanSession(mqttProperties.getCleanSession());
             SenderClient.setClient(client);
             try

@@ -68,4 +68,8 @@
         WHERE device_id = #{device_id}
     </select>
 
+    <select id="searchAllRoom" resultType="com.MacrohardStudio.model.rootTable.Room">
+        SELECT * FROM room
+    </select>
+
 </mapper>

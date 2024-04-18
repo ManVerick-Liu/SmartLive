@@ -183,13 +183,10 @@ public class WebSocketService
         for (Session toSession : onlineSessionClientList)
         {
             // 排除掉自己
-            /*if (!toSession.equalsIgnoreCase(session))
+            if (!toSession.equals(session))
             {
-                log.info("==> 服务端给客户端群发消息 session_id = {}, toSession_id = {}, message = {}", session.getId(), toSession.getId(), message);
                 toSession.getAsyncRemote().sendText(message);
-            }*/
-            // 异步发送
-            toSession.getAsyncRemote().sendText(message);
+            }
         }
     }
 
