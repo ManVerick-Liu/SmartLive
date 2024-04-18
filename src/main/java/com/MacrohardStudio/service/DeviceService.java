@@ -166,8 +166,8 @@ public class DeviceService implements IDeviceService
 
                 //不检查命令与设备状态的互斥
                 iMqttService.publish(device_mac_address.toString(), command.toString());
-                //device.setDevice_activation(1);
-                //updateDeviceActivation(device);
+                device.setDevice_activation(command);
+                updateDeviceActivation(device);
                 responseCode.setCode(HttpStatusCode.OK.getValue());
                 return responseCode;
             }
@@ -243,8 +243,8 @@ public class DeviceService implements IDeviceService
 
                 //不检查命令与设备状态的互斥
                 iMqttService.publish(device_mac_address.toString(), command.toString());
-                //device.setDevice_activation(1);
-                //updateDeviceActivation(device);
+                device.setDevice_activation(command);
+                updateDeviceActivation(device);
                 responseCode.setCode(HttpStatusCode.OK.getValue());
                 return responseCode;
             }
@@ -284,8 +284,8 @@ public class DeviceService implements IDeviceService
 
                 //不检查命令与设备状态的互斥
                 iMqttService.publish(device_mac_address.toString(), command.toString());
-                //device.setDevice_activation(1);
-                //updateDeviceActivation(device);
+                device.setDevice_activation(command);
+                updateDeviceActivation(device);
                 responseCode.setCode(HttpStatusCode.OK.getValue());
                 return responseCode;
             }

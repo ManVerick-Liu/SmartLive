@@ -178,6 +178,7 @@ public class WebSocketService
         if(onlineSessionClientCount.get() == 0)
         {
             log.info(LogTitle.WebSocket.toString() + " 没有会话，发送消息失败");
+            return;
         }
         log.info(LogTitle.WebSocket.toString() + " ==> 服务端给当前 {} 个在线的客户端群发消息 message = {}", onlineSessionClientCount, message);
         for (Session toSession : onlineSessionClientList)
@@ -185,7 +186,15 @@ public class WebSocketService
             // 排除掉自己
             if (!toSession.equals(session))
             {
-                toSession.getAsyncRemote().sendText(message);
+                try
+                {
+                    toSession.getAsyncRemote().sendText(message);
+                }
+                catch (IllegalStateException e)
+                {
+                    log.warn(LogTitle.WebSocket.toString() + " 异步发送消息失败");
+                    //e.printStackTrace();
+                }
             }
         }
     }

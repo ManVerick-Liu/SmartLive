@@ -55,7 +55,7 @@ public class ReceiverClientCallBack implements MqttCallbackExtended
             //logger.info(LogTitle.MQTT.toString() + " 与EMQX服务器成功重新连接");
    
         }*/
-        receiverClient.unsubscribe("subtopic");
+        receiverClient.unsubscribe("publish");
         receiverClient.connect();
     }
 
