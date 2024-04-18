@@ -38,11 +38,12 @@ public class SenderClientCallBack implements MqttCallbackExtended
     public void connectionLost(Throwable throwable)
     {
         //logger.info(LogTitle.MQTT.toString() + " 与EMQX服务器连接断开，可以做重连");
-        if (SenderClient.client == null || !SenderClient.client.isConnected())
+        /*if (SenderClient.client == null || !SenderClient.client.isConnected())
         {
             //logger.info(LogTitle.MQTT.toString() + " 与EMQX服务器成功重新连接");
 
-        }
+        }*/
+        senderClient.unsubscribe("subtopic");
         senderClient.connect();
     }
 

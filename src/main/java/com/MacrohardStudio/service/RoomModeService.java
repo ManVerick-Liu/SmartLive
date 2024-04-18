@@ -176,7 +176,7 @@ public class RoomModeService implements IRoomModeService {
 
         if(ts_ids.isEmpty() || hs_ids.isEmpty())
         {
-            log.error(LogTitle.Main.toString() + " 该房间没有温度或者湿度传感器");
+            log.error(LogTitle.Main.toString() + " 房间 {} 没有温度或者湿度传感器", room_id);
             return;
         }
 
